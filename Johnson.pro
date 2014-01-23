@@ -12,13 +12,13 @@ TARGET = Johnson
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    job.cpp \
-    mashine.cpp
+SOURCES += source/job.cpp \
+    source/mashine.cpp \
+    source/main.cpp \
+    source/mainwindow.cpp
 
-HEADERS  += mainwindow.h \
-    job.h \
-    mashine.h
+HEADERS  += headers/job.h \
+    headers/mashine.h \
+    headers/mainwindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += ui/mainwindow.ui
