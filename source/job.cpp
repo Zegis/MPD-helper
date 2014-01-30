@@ -1,4 +1,4 @@
-#include "job.h"
+#include "headers/job.h"
 
 Job::Job(int Id, int NumberOfMashines)
 {

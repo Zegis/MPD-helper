@@ -47,11 +47,6 @@ private:
     Mashine * second;
     Mashine * third;
 
-    Mashine ** Mashines;
-
-    int JobCount;
-    int MashineCount;
-
     QGraphicsScene plot;
 
     void ClearData();

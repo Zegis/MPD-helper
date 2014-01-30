@@ -1,4 +1,4 @@
-#include "mashine.h"
+#include "headers/mashine.h"
 
 Mashine::Mashine(int Id)
 {
@@ -16,7 +16,7 @@ void Mashine::appendJob(Job * newJob)
     jobs.append(newJob);
 }
 
-void Mashine::SetJobs(QList<Job *> Jobs)
+void Mashine::setJobs(QList<Job *> Jobs)
 {
     jobs = Jobs;
 }

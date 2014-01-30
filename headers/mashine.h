@@ -3,7 +3,7 @@
 
 #include<QList>
 #include<QString>
-#include"job.h"
+#include"headers/job.h"
 
 enum Dominance
 {
@@ -23,7 +23,7 @@ public:
     Mashine(int Id);
     Mashine(int Id, QList<Job*> Jobs);
 
-    void SetJobs(QList<Job*> Jobs);
+    void setJobs(QList<Job*> Jobs);
 
     void appendJob(Job * newJob);
     QString getOrder();

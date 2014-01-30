@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+ï»¿#include "headers/mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QTextStream>
 #include <QMessageBox>
@@ -10,8 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tableWidget->setColumnWidth(0,40);
-
-    JobCount = 0;
 
     first = new Mashine(1);
     second = new Mashine(2);
@@ -66,6 +64,8 @@ void MainWindow::on_orderButton_clicked()
     ClearData();
     PrepareJobsSet();
 
+    int MashineCount = ui->MashinesSpinBox->value();
+
     if(MashineCount == 3)
         JobSetDominance = CheckDominance();
 
@@ -92,8 +92,8 @@ void MainWindow::ClearData()
 
 void MainWindow::PrepareJobsSet()
 {
-    JobCount = ui->JobsSpinBox->value();
-    MashineCount = ui->MashinesSpinBox->value();
+    int JobCount = ui->JobsSpinBox->value();
+    int MashineCount = ui->MashinesSpinBox->value();
 
     int timeOnMashine = 0;
 
@@ -121,6 +121,8 @@ Dominance MainWindow::CheckDominance()
     int minP3 = A[0]->getTimeFromMashinePlotting(3);;
 
 
+    int JobCount = ui->JobsSpinBox->value();
+
     for(int i=1; i<JobCount; ++i)
     {
         if (A[i]->getTimeFromMashinePlotting(2) > maxP2) maxP2 = A[i]->getTimeFromMashinePlotting(2);
@@ -140,6 +142,8 @@ Dominance MainWindow::CheckDominance()
 
 void MainWindow::DoJohnson()
 {
+    int JobCount = ui->JobsSpinBox->value();
+    int MashineCount = ui->MashinesSpinBox->value();
 
     for(int i=0; i<JobCount;)
     {
@@ -158,15 +162,16 @@ void MainWindow::DoJohnson()
     if(A.size() > 0) sortJobsAccordingToMashine(&A,1,1);
     if(B.size() > 0) sortJobsAccordingToMashine(&B,2,0);
 
-    first->SetJobs(A+B);
-    second->SetJobs(A+B);
-    if(MashineCount == 3) third->SetJobs(A+B);
+    first->setJobs(A+B);
+    second->setJobs(A+B);
+    if(MashineCount == 3) third->setJobs(A+B);
 }
 
 void MainWindow::ShowResults()
 {
     QString result = first->getOrder();
     ui->Orderlabel->setText("Optymalne szeregowanie: " + result);
+    int JobCount = ui->JobsSpinBox->value();
     JobCount = ui->JobsSpinBox->value();
 
     int offsetFor2ndJob = first->getEndingTimeForJob(1);
@@ -182,6 +187,7 @@ void MainWindow::ShowResults()
     QPen pen(colorTab[0]);
     QBrush brush(colorTab[0]);
 
+    int MashineCount = ui->MashinesSpinBox->value();
     int LabelsCount = JobCount * MashineCount;
     QString tmp;
     QGraphicsSimpleTextItem **TimeLabels = new QGraphicsSimpleTextItem*[LabelsCount];
@@ -264,6 +270,8 @@ void MainWindow::ShowResults()
 
 void MainWindow::PrepareLabels(int maxTime)
 {
+    int MashineCount = ui->MashinesSpinBox->value();
+
     QString tmp;
     QGraphicsSimpleTextItem **MashineLabels = new QGraphicsSimpleTextItem*[MashineCount];
 
@@ -293,7 +301,7 @@ void MainWindow::PrepareLabels(int maxTime)
 bool MainWindow::JohnsonCondition()
 {
     int cmp1, cmp2;
-
+    int JobCount = ui->JobsSpinBox->value();
     for(int i=0; i < JobCount-1; ++i)
     {
         cmp1 = (first->getJobDuration(i) < second->getJobDuration(i+1)) ? first->getJobDuration(i) : second->getJobDuration(i+1);
@@ -309,8 +317,10 @@ bool MainWindow::JohnsonCondition()
 
 void MainWindow::ShowError()
 {
+    int MashineCount = ui->MashinesSpinBox->value();
+
     if(MashineCount == 3)
-        ui->ResultLabel->setText("Zadna maszyna nie dominuje nad drug¹! Nie mozna szeregowaæ.");
+        ui->ResultLabel->setText("Zadna maszyna nie dominuje nad drugÄ…! Nie mozna szeregowaÄ‡.");
     else
         ui->ResultLabel->setText("Warunek Johnsona nie zostal spelniony!");
 }
