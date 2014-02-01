@@ -3,14 +3,8 @@
 
 #include<QList>
 #include<QString>
-#include"headers/job.h"
-
-enum Dominance
-{
-    None = 0,
-    FirstOverSecond = 1,
-    ThirdOverSecond = 2
-};
+#include "headers/job.h"
+#include "dominance.h"
 
 class Mashine
 {

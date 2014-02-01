@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "mashine.h"
+#include "solver.h"
 #include <Qlist>
 #include <QGraphicsScene>
 #include <QColor>
@@ -39,7 +40,7 @@ private:
     Ui::MainWindow *ui;
 
     QList<Job *> A;
-    QList<Job *> B;
+    Solver solv;
 
     QColor colorTab[10];
 
@@ -50,18 +51,12 @@ private:
     QGraphicsScene plot;
 
     void ClearData();
-    void sortJobsAccordingToMashine(QList<Job*>*,int, int);
-    void DoJohnson();
     void PrepareJobsSet();
     void ShowResults();
     void ShowError();
     void PrepareLabels(int maxTime);
 
-    Dominance CheckDominance();
-
     Dominance JobSetDominance;
-
-    bool JohnsonCondition();
 };
 
 #endif // MAINWINDOW_H

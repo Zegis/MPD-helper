@@ -37,28 +37,6 @@ MainWindow::~MainWindow()
     delete third;
 }
 
-void MainWindow::sortJobsAccordingToMashine(QList<Job *> *jobs, int mashineId, int option)
-{
-        if(option == 1) // nonRising
-        {
-            for(int i=0; i < jobs->size(); ++i)
-                for(int j=0; j < jobs->size() - 1 - i; ++j)
-                {
-                    if((*jobs)[j]->getTimeFromMashine(mashineId) > (*jobs)[j+1]->getTimeFromMashine(mashineId))
-                        jobs->swap(j,j+1);
-                }
-        }
-        else if (option == 0) // nonDecreasing
-        {
-            for(int i=0; i < jobs->size(); ++i)
-                for(int j=0; j < jobs->size() - 1 - i; ++j)
-                {
-                    if((*jobs)[j]->getTimeFromMashine(mashineId) < (*jobs)[j+1]->getTimeFromMashine(mashineId))
-                        jobs->swap(j,j+1);
-                }
-        }
-}
-
 void MainWindow::on_orderButton_clicked()
 {
     ClearData();
@@ -66,25 +44,22 @@ void MainWindow::on_orderButton_clicked()
 
     int MashineCount = ui->MashinesSpinBox->value();
 
-    if(MashineCount == 3)
-        JobSetDominance = CheckDominance();
 
-    if(MashineCount == 2 || JobSetDominance != None)
+    A = solv.Johnson(A, MashineCount);
+    if(A.length() != 0)
     {
-        DoJohnson();
-        if(JohnsonCondition())
-            ShowResults();
-        else ShowError();
-    }
-    else
-        ShowError();
+        first->setJobs(A);
+        second->setJobs(A);
+        if(MashineCount == 3) third->setJobs(A);
+        ShowResults();
 
+    }
+    else ShowError();
 }
 
 void MainWindow::ClearData()
 {
     A.clear();
-    B.clear();
     first->clear();
     second->clear();
     third->clear();
@@ -112,60 +87,7 @@ void MainWindow::PrepareJobsSet()
      }
 }
 
-Dominance MainWindow::CheckDominance()
-{
-    Dominance ret = None;
 
-    int maxP2 = A[0]->getTimeFromMashinePlotting(2);
-    int minP1 = A[0]->getTimeFromMashinePlotting(1);
-    int minP3 = A[0]->getTimeFromMashinePlotting(3);;
-
-
-    int JobCount = ui->JobsSpinBox->value();
-
-    for(int i=1; i<JobCount; ++i)
-    {
-        if (A[i]->getTimeFromMashinePlotting(2) > maxP2) maxP2 = A[i]->getTimeFromMashinePlotting(2);
-        if (A[i]->getTimeFromMashinePlotting(1) < minP1) minP1 = A[i]->getTimeFromMashinePlotting(1);
-        if (A[i]->getTimeFromMashinePlotting(3) < minP3) minP3 = A[i]->getTimeFromMashinePlotting(3);
-    }
-
-    if(minP1 >= maxP2)
-        ret = FirstOverSecond;
-    else if (minP3 >= maxP2)
-        ret = ThirdOverSecond;
-    else
-        ret = None;
-
-    return ret;
-}
-
-void MainWindow::DoJohnson()
-{
-    int JobCount = ui->JobsSpinBox->value();
-    int MashineCount = ui->MashinesSpinBox->value();
-
-    for(int i=0; i<JobCount;)
-    {
-        if(A[i]->getTimeFromMashine(1) > A[i]->getTimeFromMashine(2))
-        {
-            Job* tmp = A[i];
-
-            B.append(tmp);
-            A.removeAt(i);
-            --JobCount;
-        }
-        else
-            ++i;
-    }
-
-    if(A.size() > 0) sortJobsAccordingToMashine(&A,1,1);
-    if(B.size() > 0) sortJobsAccordingToMashine(&B,2,0);
-
-    first->setJobs(A+B);
-    second->setJobs(A+B);
-    if(MashineCount == 3) third->setJobs(A+B);
-}
 
 void MainWindow::ShowResults()
 {
@@ -296,23 +218,6 @@ void MainWindow::PrepareLabels(int maxTime)
         TimeLabels[i]->setPos(24+i*20,0);
         plot.addItem(TimeLabels[i]);
     }
-}
-
-bool MainWindow::JohnsonCondition()
-{
-    int cmp1, cmp2;
-    int JobCount = ui->JobsSpinBox->value();
-    for(int i=0; i < JobCount-1; ++i)
-    {
-        cmp1 = (first->getJobDuration(i) < second->getJobDuration(i+1)) ? first->getJobDuration(i) : second->getJobDuration(i+1);
-
-        cmp2 = (first->getJobDuration(i+1) < second->getJobDuration(i)) ? first->getJobDuration(i+1) : second->getJobDuration(i);
-
-        if(cmp1 > cmp2)
-            return false;
-    }
-
-    return true;
 }
 
 void MainWindow::ShowError()
