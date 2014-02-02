@@ -4,7 +4,7 @@ MPD Helper
 Simple app to sequence jobs on procesors via sequencing alghoritms, done with C++ and Qt.
 
 ###What's done?
-Simplest of all alghoritms - Johnson's alghoritm for sequencing.
+Simplest of all alghoritms - [Johnson's alghoritm for sequencing](http://dev.kofun.pl/algorithms/johnsons-sequencing-algorithm/).
 Simple Qt UI with plotting the resoult.
 
 ###To do:

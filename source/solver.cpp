@@ -44,9 +44,9 @@ bool Solver::JohnsonCondition(QList<Job *> A)
     int JobCount = A.length();
     for(int i=0; i < JobCount-1; ++i)
     {
-       // cmp1 = (first->getJobDuration(i) < second->getJobDuration(i+1)) ? first->getJobDuration(i) : second->getJobDuration(i+1);
+        cmp1 = ( A[i]->getTimeFromMashinePlotting(1) < A[i+1]->getTimeFromMashinePlotting(2) ) ? A[i]->getTimeFromMashinePlotting(1) : A[i+1]->getTimeFromMashinePlotting(2);
 
-      //  cmp2 = (first->getJobDuration(i+1) < second->getJobDuration(i)) ? first->getJobDuration(i+1) : second->getJobDuration(i);
+        cmp2 = (A[i+1]->getTimeFromMashinePlotting(1)) < A[i]->getTimeFromMashinePlotting(2) ? A[i+1]->getTimeFromMashinePlotting(1) : A[i]->getTimeFromMashinePlotting(2) ;
 
         if(cmp1 > cmp2)
             return false;
