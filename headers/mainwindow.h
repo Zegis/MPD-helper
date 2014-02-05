@@ -4,12 +4,7 @@
 #include <QMainWindow>
 #include "mashine.h"
 #include "solver.h"
-#include <Qlist>
-#include <QGraphicsScene>
-#include <QColor>
-#include <QPen>
-#include <QBrush>
-#include <QGraphicsSimpleTextItem>
+#include "headers/ploter.h"
 #include <QFile>
 #include <QFileDialog>
 
@@ -42,13 +37,12 @@ private:
     QList<Job *> A;
     Solver solv;
 
-    QColor colorTab[10];
+    Ploter plot;
+
 
     Mashine * first;
     Mashine * second;
     Mashine * third;
-
-    QGraphicsScene plot;
 
     void ClearData();
     void PrepareJobsSet();
