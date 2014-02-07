@@ -17,13 +17,15 @@ SOURCES += source/job.cpp \
     source/main.cpp \
     source/mainwindow.cpp \
     source/solver.cpp \
-    source/ploter.cpp
+    source/ploter.cpp \
+    source/solution.cpp
 
 HEADERS  += headers/job.h \
     headers/mashine.h \
     headers/mainwindow.h \
     headers/solver.h \
     headers/dominance.h \
-    headers/ploter.h
+    headers/ploter.h \
+    headers/solution.h
 
 FORMS    += ui/mainwindow.ui
