@@ -21,19 +21,6 @@ void Mashine::setJobs(QList<Job *> Jobs)
     jobs = Jobs;
 }
 
-QString Mashine::getOrder()
-{
-    QString order, tmp;
-
-    for(int i=0; i < jobs.size(); ++i)
-    {
-        tmp.setNum(jobs[i]->getId());
-        order.append(tmp);
-    }
-
-    return order;
-}
-
 int Mashine::getEndingTimeForJob(int jobNumber)
 {
     --jobNumber;

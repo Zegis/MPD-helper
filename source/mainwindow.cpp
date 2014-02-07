@@ -33,7 +33,7 @@ void MainWindow::on_orderButton_clicked()
 
 
     solution = solv.Johnson(A, MashineCount);
-    if(solution.getOptimalOrder().length() != 0)
+    if(solution.isOptimal())
     {
         first->setJobs(solution.getOptimalOrder());
         second->setJobs(solution.getOptimalOrder());
@@ -76,7 +76,8 @@ void MainWindow::PrepareJobsSet()
 
 void MainWindow::ShowResults()
 {
-    QString result = first->getOrder();
+    //QString result = first->getOrder();
+    QString result = solution.getOptimalOrderAsString();
     ui->Orderlabel->setText("Optymalne szeregowanie: " + result);
     int JobCount = ui->JobsSpinBox->value();
     int MashineCount = ui->MashinesSpinBox->value();

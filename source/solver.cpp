@@ -35,7 +35,7 @@ Solution Solver::Johnson(QList<Job*> jobs, int MashineAmount)
 
         return Solution(jobs+B, dominance);
     }
-    return Solution(B, None);
+    return Solution();
 }
 
 bool Solver::JohnsonCondition(QList<Job *> A)

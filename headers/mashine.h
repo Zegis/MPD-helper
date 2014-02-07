@@ -20,7 +20,6 @@ public:
     void setJobs(QList<Job*> Jobs);
 
     void appendJob(Job * newJob);
-    QString getOrder();
 
     int getEndingTimeForJob(int);
 
