@@ -32,12 +32,12 @@ void MainWindow::on_orderButton_clicked()
     int MashineCount = ui->MashinesSpinBox->value();
 
 
-    A = solv.Johnson(A, MashineCount);
-    if(A.length() != 0)
+    solution = solv.Johnson(A, MashineCount);
+    if(solution.getOptimalOrder().length() != 0)
     {
-        first->setJobs(A);
-        second->setJobs(A);
-        if(MashineCount == 3) third->setJobs(A);
+        first->setJobs(solution.getOptimalOrder());
+        second->setJobs(solution.getOptimalOrder());
+        if(MashineCount == 3) third->setJobs(solution.getOptimalOrder());
         ShowResults();
 
     }
@@ -86,9 +86,9 @@ void MainWindow::ShowResults()
 
     ui->ResultLabel->setText("Wartosc funkcji kryterialnej: " + result);
 
-    if(JobSetDominance == FirstOverSecond)
+    if(solution.getJobSetDominance() == FirstOverSecond)
         result = "M2 zdominowana przez M1";
-    else
+    else if(solution.getJobSetDominance() == ThirdOverSecond)
         result = "M2 zdominowana przez M3";
 
     if(MashineCount == 3)

@@ -5,6 +5,7 @@
 #include "mashine.h"
 #include "solver.h"
 #include "headers/ploter.h"
+#include "solution.h"
 #include <QFile>
 #include <QFileDialog>
 
@@ -37,6 +38,8 @@ private:
     QList<Job *> A;
     Solver solv;
 
+    Solution solution;
+
     Ploter plot;
 
 
@@ -49,8 +52,6 @@ private:
     void ShowResults();
     void ShowError();
     void PrepareLabels(int maxTime);
-
-    Dominance JobSetDominance;
 };
 
 #endif // MAINWINDOW_H

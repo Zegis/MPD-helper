@@ -4,7 +4,7 @@ Solver::Solver()
 {
 }
 
-QList<Job*> Solver::Johnson(QList<Job*> jobs, int MashineAmount)
+Solution Solver::Johnson(QList<Job*> jobs, int MashineAmount)
 {
     QList<Job*> B;
 
@@ -33,9 +33,9 @@ QList<Job*> Solver::Johnson(QList<Job*> jobs, int MashineAmount)
         if(jobs.size() > 0) sortJobsAccordingToMashine(&jobs,1,1);
         if(B.size() > 0) sortJobsAccordingToMashine(&B,2,0);
 
-        return (jobs+B);
+        return Solution(jobs+B, dominance);
     }
-    return B;
+    return Solution(B, None);
 }
 
 bool Solver::JohnsonCondition(QList<Job *> A)

@@ -3,13 +3,14 @@
 
 #include "job.h"
 #include "dominance.h"
+#include "solution.h"
 #include <QList>
 
 class Solver
 {    
 public:
     Solver();
-    QList<Job *> Johnson(QList<Job*> jobs, int MashineAmount);
+    Solution Johnson(QList<Job *> jobs, int MashineAmount);
 
 private:
     void sortJobsAccordingToMashine(QList<Job*> *JobsToSort, int mashineId, int option);

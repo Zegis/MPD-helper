@@ -8,9 +8,11 @@
 class Solution
 {
 public:
-    Solution(QList<Job*> solution);
+    Solution();
+    Solution(QList<Job*> solution, Dominance setDominance);
 
     QList<Job*> getOptimalOrder();
+    Dominance getJobSetDominance();
 
 private:
     QList<Job*> optimalOrder;
