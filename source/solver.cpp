@@ -33,9 +33,12 @@ Solution Solver::Johnson(QList<Job*> jobs, int MashineAmount)
         if(jobs.size() > 0) sortJobsAccordingToMashine(&jobs,1,1);
         if(B.size() > 0) sortJobsAccordingToMashine(&B,2,0);
 
-        return Solution(jobs+B, dominance);
+        if(JohnsonCondition(jobs+B))
+            return Solution(jobs+B, dominance);
+        else
+            return Solution("Brak optymalnego rozwiązania");
     }
-    return Solution();
+    return Solution("Brak dominacji nad 2 maszyną");
 }
 
 bool Solver::JohnsonCondition(QList<Job *> A)

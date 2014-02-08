@@ -3,6 +3,8 @@
 Solution::Solution()
 {
     solutionIsOptimal = false;
+    jobSetDominance = None;
+    error = "Brak optymalnego rozwiązania";
 }
 
 Solution::Solution(QList<Job *> solution, Dominance setDominance)
@@ -11,6 +13,14 @@ Solution::Solution(QList<Job *> solution, Dominance setDominance)
     jobSetDominance = setDominance;
 
     solutionIsOptimal = true;
+    error = "";
+}
+
+Solution::Solution(QString errorMsg)
+{
+    solutionIsOptimal = false;
+    error = errorMsg;
+    jobSetDominance = None;
 }
 
 QList<Job*> Solution::getOptimalOrder()
@@ -39,4 +49,9 @@ QString Solution::getOptimalOrderAsString()
 bool Solution::isOptimal()
 {
     return solutionIsOptimal;
+}
+
+QString Solution::getErrorMsg()
+{
+    return error;
 }

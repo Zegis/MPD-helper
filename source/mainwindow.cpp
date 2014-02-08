@@ -76,7 +76,6 @@ void MainWindow::PrepareJobsSet()
 
 void MainWindow::ShowResults()
 {
-    //QString result = first->getOrder();
     QString result = solution.getOptimalOrderAsString();
     ui->Orderlabel->setText("Optymalne szeregowanie: " + result);
     int JobCount = ui->JobsSpinBox->value();
@@ -101,12 +100,7 @@ void MainWindow::ShowResults()
 
 void MainWindow::ShowError()
 {
-    int MashineCount = ui->MashinesSpinBox->value();
-
-    if(MashineCount == 3)
-        ui->ResultLabel->setText("Zadna maszyna nie dominuje nad drugą! Nie mozna szeregować.");
-    else
-        ui->ResultLabel->setText("Warunek Johnsona nie zostal spelniony!");
+    ui->ResultLabel->setText(solution.getErrorMsg());
 }
 
 void MainWindow::on_JobsSpinBox_valueChanged(int arg1)
