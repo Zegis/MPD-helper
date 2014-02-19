@@ -28,11 +28,6 @@ QList<Job*> Solution::getOptimalOrder()
     return optimalOrder;
 }
 
-Dominance Solution::getJobSetDominance()
-{
-    return jobSetDominance;
-}
-
 QString Solution::getOptimalOrderAsString()
 {
     QString retString, tmp;
@@ -45,6 +40,43 @@ QString Solution::getOptimalOrderAsString()
 
     return retString;
 }
+
+Dominance Solution::getJobSetDominance()
+{
+    return jobSetDominance;
+}
+
+int Solution::getTimeCriteria()
+{
+    int ret = 1;
+    int jobDuration = 0;
+    int timeBeforeJobStart[3];
+
+    for(int i=0; i<3; ++i)
+        timeBeforeJobStart[i] = 0;
+
+    for(int i=0; i<optimalOrder.length(); ++i)
+    {
+        jobDuration = optimalOrder[i]->getTimeFromMashinePlotting(1);
+
+        if(timeBeforeJobStart[0] + jobDuration >= timeBeforeJobStart[1])
+           timeBeforeJobStart[1] = timeBeforeJobStart[0] + jobDuration;
+
+        timeBeforeJobStart[0] += jobDuration;
+
+        jobDuration = optimalOrder[i]->getTimeFromMashinePlotting(2);
+        if(timeBeforeJobStart[1] + jobDuration >= timeBeforeJobStart[2])
+            timeBeforeJobStart[2] = timeBeforeJobStart[1] + jobDuration;
+
+        timeBeforeJobStart[1] += jobDuration;
+
+        jobDuration = optimalOrder[i]->getTimeFromMashinePlotting(3);
+        timeBeforeJobStart[2] += jobDuration;
+    }
+
+    return timeBeforeJobStart[2];
+}
+
 
 bool Solution::isOptimal()
 {

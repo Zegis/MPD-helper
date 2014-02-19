@@ -14,12 +14,13 @@ public:
     Solution(QString errorMsg);
 
     QList<Job*> getOptimalOrder();
-    Dominance getJobSetDominance();
-
     QString getOptimalOrderAsString();
-    QString getErrorMsg();
+
+    Dominance getJobSetDominance();
+    int getTimeCriteria();
 
     bool isOptimal();
+    QString getErrorMsg();
 
 private:
     QList<Job*> optimalOrder;

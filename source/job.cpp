@@ -44,6 +44,7 @@ int Job::getTimeFromMashine(int mashine)
 int Job::getTimeFromMashinePlotting(int mashine)
 {
     --mashine;
+
     if(mashine < numberOfMashines && mashine >= 0)
     {
         return timesOnMashines[mashine];
