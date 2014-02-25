@@ -107,3 +107,23 @@ void Solver::sortJobsAccordingToMashine(QList<Job*>* jobs, int mashineId, int op
             }
     }
 }
+
+Solution Solver::Fifo(QList<Job *> jobs)
+{
+    sortJobsDescendingBasedOnR(&jobs);
+
+    return Solution(jobs);
+}
+
+void Solver::sortJobsDescendingBasedOnR(QList<Job *> *JobsToSort)
+{
+    int n = JobsToSort->size();
+    do
+    {
+        for(int i=0; i < n -1; ++i)
+            if( (*JobsToSort)[i]->getRelaseTime() < (*JobsToSort)[i+1]->getRelaseTime())
+                JobsToSort->swap(i, i+1);
+
+        --n;
+    }while(n > 1);
+}

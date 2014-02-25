@@ -53,6 +53,16 @@ int Job::getTimeFromMashinePlotting(int mashine)
     return 0;
 }
 
+void Job::setRelaseTime(int relase)
+{
+    r = relase;
+}
+
+int Job::getRelaseTime()
+{
+    return r;
+}
+
 Job::~Job()
 {
     delete [] timesOnMashines;

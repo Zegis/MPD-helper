@@ -11,6 +11,7 @@ class Solution
 public:
     Solution();
     Solution(QList<Job*> solution, Dominance setDominance);
+    Solution(QList<Job*> solution);
     Solution(QString errorMsg);
 
     QList<Job*> getOptimalOrder();

@@ -8,6 +8,8 @@ private:
     int numberOfMashines;
     int * timesOnMashines;
 
+    int r;
+
 public:
     Job(int Id, int NnumberOfMashines);
     ~Job();
@@ -18,6 +20,9 @@ public:
     int getTimeFromMashinePlotting(int mashine);
 
     bool TimeOnSecondMashineGreater();
+
+    void setRelaseTime(int relase);
+    int getRelaseTime();
 };
 
 #endif // JOB_H

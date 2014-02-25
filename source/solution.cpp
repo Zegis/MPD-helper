@@ -16,6 +16,15 @@ Solution::Solution(QList<Job *> solution, Dominance setDominance)
     error = "";
 }
 
+Solution::Solution(QList<Job*> solution)
+{
+    optimalOrder = solution;
+    jobSetDominance = None;
+
+    solutionIsOptimal = true;
+    error = "";
+}
+
 Solution::Solution(QString errorMsg)
 {
     solutionIsOptimal = false;
@@ -74,7 +83,9 @@ int Solution::getTimeCriteria()
         timeBeforeJobStart[2] += jobDuration;
     }
 
-    return timeBeforeJobStart[2];
+    ret = timeBeforeJobStart[2];
+
+    return ret;
 }
 
 

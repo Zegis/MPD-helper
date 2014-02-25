@@ -84,11 +84,8 @@ void MainWindow::ShowResults()
     ui->graphicsView->setScene(plot.drawSolutionPlot(first,second,third,JobCount,MashineCount, result));
     ui->graphicsView->show();
 
-    //if(MashineCount == 3)
-    //{
-        result.setNum(solution.getTimeCriteria());
+    result.setNum(solution.getTimeCriteria());
     ui->ResultLabel->setText("Wartosc funkcji kryterialnej: " + result);
-    //}
 
     if(solution.getJobSetDominance() == FirstOverSecond)
         result = "M2 zdominowana przez M1";
