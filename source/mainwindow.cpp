@@ -9,7 +9,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     ui->tableWidget->setColumnWidth(0,40);
+    ui->AlgorithmBox->addItem("Johnson");
+    ui->AlgorithmBox->addItem("FIFO");
+    ui->tableWidget->verticalHeader()->show();
+
+    chosenAlgorithm = 0;
 
     first = new Mashine(1);
     second = new Mashine(2);
@@ -32,7 +38,9 @@ void MainWindow::on_orderButton_clicked()
     int MashineCount = ui->MashinesSpinBox->value();
 
 
-    solution = solv.Johnson(A, MashineCount);
+    solution = (chosenAlgorithm == 0)? solv.Johnson(A, MashineCount) : solv.Fifo(A);
+
+
     if(solution.isOptimal())
     {
         first->setJobs(solution.getOptimalOrder());
@@ -57,9 +65,17 @@ void MainWindow::PrepareJobsSet()
     int JobCount = ui->JobsSpinBox->value();
     int MashineCount = ui->MashinesSpinBox->value();
 
+    if(chosenAlgorithm == 0)
+        PrepareJobsForJohnson(JobCount,MashineCount);
+    else
+        PrepareJobsForFifo(JobCount);
+}
+
+void MainWindow::PrepareJobsForJohnson(int jobCount, int MashineCount)
+{
     int timeOnMashine = 0;
 
-    for(int i=0; i<JobCount; ++i)
+    for(int i=0; i<jobCount; ++i)
      {
           A.append(new Job(i+1,MashineCount));
 
@@ -74,12 +90,23 @@ void MainWindow::PrepareJobsSet()
      }
 }
 
+void MainWindow::PrepareJobsForFifo(int jobCount)
+{
+    for(int i=0; i<jobCount; ++i)
+    {
+        A.append(new Job(i+1,1));
+
+        A[i]->setTimeOnMashine(ui->tableWidget->item(0,i)->text().toInt(),1);
+        A[i]->setRelaseTime(ui->tableWidget->item(1,i)->text().toInt());
+    }
+}
+
 void MainWindow::ShowResults()
 {
     QString result = solution.getOptimalOrderAsString();
     ui->Orderlabel->setText("Optymalne szeregowanie: " + result);
     int JobCount = ui->JobsSpinBox->value();
-    int MashineCount = ui->MashinesSpinBox->value();
+    int MashineCount = (chosenAlgorithm == 0) ? ui->MashinesSpinBox->value() : 1;
 
     ui->graphicsView->setScene(plot.drawSolutionPlot(first,second,third,JobCount,MashineCount, result));
     ui->graphicsView->show();
@@ -125,7 +152,7 @@ void MainWindow::on_MashinesSpinBox_valueChanged(int arg1)
     ui->tableWidget->setVerticalHeaderLabels(tmp.split(";"));
 }
 
-void MainWindow::on_actionZapisz_activated()
+void MainWindow::on_actionZapisz_triggered()
 {
 
     QString fileName =  QFileDialog::getSaveFileName(this, tr("Zapisywanie jako"), "save.txt", tr("Normal text file (*.txt)"));
@@ -160,7 +187,7 @@ void MainWindow::on_actionZapisz_activated()
     }
 }
 
-void MainWindow::on_actionOtw_rz_activated()
+void MainWindow::on_actionOtworz_triggered()
 {
 
     QString fileName =  QFileDialog::getOpenFileName(this, tr("Otwieranie"), "", tr("Normal text file (*.txt)"));
@@ -196,5 +223,18 @@ void MainWindow::on_actionOtw_rz_activated()
         QMessageBox msg;
         msg.setText("Nie mozna otworzyc pliku!");
         msg.exec();
+    }
+}
+
+void MainWindow::on_AlgorithmBox_currentIndexChanged(int index)
+{
+    chosenAlgorithm = index;
+
+    if(chosenAlgorithm == 0)
+        ui->MashinesSpinBox->setValue(2);
+    else
+    {
+        QStringList newLabels = (QStringList() << "P" << "R");
+        ui->tableWidget->setVerticalHeaderLabels(newLabels);
     }
 }

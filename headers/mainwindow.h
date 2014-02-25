@@ -28,9 +28,11 @@ private slots:
 
     void on_MashinesSpinBox_valueChanged(int arg1);
 
-    void on_actionZapisz_activated();
+    void on_actionZapisz_triggered();
 
-    void on_actionOtw_rz_activated();
+    void on_actionOtworz_triggered();
+
+    void on_AlgorithmBox_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;
@@ -42,6 +44,7 @@ private:
 
     Ploter plot;
 
+    int chosenAlgorithm;
 
     Mashine * first;
     Mashine * second;
@@ -49,6 +52,8 @@ private:
 
     void ClearData();
     void PrepareJobsSet();
+    void PrepareJobsForJohnson(int jobCount, int MashineCount);
+    void PrepareJobsForFifo(int jobCount);
     void ShowResults();
     void ShowError();
     void PrepareLabels(int maxTime);

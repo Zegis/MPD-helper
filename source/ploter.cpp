@@ -55,6 +55,8 @@ QGraphicsScene* Ploter::drawSolutionPlot(Mashine* first, Mashine* second, Mashin
         plot.addRect(20+offsetFor1stJob*20,20,20*jobWidth,20,pen,brush);
         plot.addItem(TimeLabels[j++]);
 
+        if(MashineCount != 1)
+        {
         job2Width = second->getJobDuration(i);
 
         if( offsetFor1stJob + jobWidth >= offsetFor2ndJob)
@@ -77,6 +79,7 @@ QGraphicsScene* Ploter::drawSolutionPlot(Mashine* first, Mashine* second, Mashin
         plot.addRect(20+offsetFor3rdJob*20,60,20*job3Width,20,pen,brush);
         plot.addItem(TimeLabels[j++]);
         }
+        }
 
         pen.setColor(colorTab[i]);
         brush.setColor(colorTab[i]);
@@ -91,10 +94,15 @@ QGraphicsScene* Ploter::drawSolutionPlot(Mashine* first, Mashine* second, Mashin
         result.setNum(offsetFor3rdJob);
         PrepareLabels(offsetFor3rdJob, MashineCount);
     }
-    else
+    else if(MashineCount == 2)
     {
         result.setNum(offsetFor2ndJob);
         PrepareLabels(offsetFor2ndJob, MashineCount);
+    }
+    else
+    {
+        result.setNum(offsetFor1stJob);
+        PrepareLabels(offsetFor1stJob, MashineCount);
     }
 
     return &plot;

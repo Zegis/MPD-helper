@@ -121,7 +121,7 @@ void Solver::sortJobsDescendingBasedOnR(QList<Job *> *JobsToSort)
     do
     {
         for(int i=0; i < n -1; ++i)
-            if( (*JobsToSort)[i]->getRelaseTime() < (*JobsToSort)[i+1]->getRelaseTime())
+            if( (*JobsToSort)[i]->getRelaseTime() > (*JobsToSort)[i+1]->getRelaseTime())
                 JobsToSort->swap(i, i+1);
 
         --n;
