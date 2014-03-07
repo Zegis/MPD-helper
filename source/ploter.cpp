@@ -1,6 +1,6 @@
 #include "headers\ploter.h"
 
-Ploter::Ploter()
+Ploter::Ploter(): scale(20), labelOffset(24,4), jobHeight(19), lineStartingX(20)
 {
     colorTab[0].setNamedColor("cyan");
     colorTab[1].setNamedColor("olive");
@@ -12,10 +12,15 @@ Ploter::Ploter()
     colorTab[7].setNamedColor("gold");
     colorTab[7].setNamedColor("fuchsia");
     colorTab[9].setNamedColor("tan");
+
+    lineStartingY[0] = 20;
+    lineStartingY[1] = 40;
+    lineStartingY[2] = 60;
 }
 
 QGraphicsScene* Ploter::drawSolutionPlot(Mashine* first, Mashine* second, Mashine* third, int JobCount, int MashineCount , QString result)
 {
+
     int offsetFor2ndJob = first->getEndingTimeForJob(1);
     int offsetFor1stJob = 0;
     int offsetFor3rdJob = 0;
@@ -31,7 +36,7 @@ QGraphicsScene* Ploter::drawSolutionPlot(Mashine* first, Mashine* second, Mashin
     QPen pen(colorTab[0]);
     QBrush brush(colorTab[0]);
 
-    QString tmp;
+    QString jobLabelContent;
     QGraphicsSimpleTextItem **TimeLabels = new QGraphicsSimpleTextItem*[LabelsCount];
 
     plot.clear();
@@ -45,40 +50,40 @@ QGraphicsScene* Ploter::drawSolutionPlot(Mashine* first, Mashine* second, Mashin
     for(int i=1; i < JobCount+1; ++i)
     {
 
-        tmp.setNum(first->getJobId(i));
-        tmp.insert(0,"Z");
+        jobLabelContent.setNum(first->getJobId(i));
+        jobLabelContent.insert(0,"Z");
 
         jobWidth = first->getJobDuration(i);
 
-        TimeLabels[j]->setText(tmp);
-        TimeLabels[j]->setPos(24+offsetFor1stJob*20,25);
-        plot.addRect(20+offsetFor1stJob*20,20,20*jobWidth,20,pen,brush);
+        TimeLabels[j]->setText(jobLabelContent);
+        TimeLabels[j]->setPos(labelOffset.x() + offsetFor1stJob * scale, lineStartingY[0] + labelOffset.y());
+        plot.addRect(lineStartingX + offsetFor1stJob * scale, lineStartingY[0], jobWidth * scale, jobHeight , pen, brush);
         plot.addItem(TimeLabels[j++]);
 
         if(MashineCount != 1)
         {
-        job2Width = second->getJobDuration(i);
+            job2Width = second->getJobDuration(i);
 
-        if( offsetFor1stJob + jobWidth >= offsetFor2ndJob)
-            offsetFor2ndJob = offsetFor1stJob + jobWidth;
+            if( offsetFor1stJob + jobWidth >= offsetFor2ndJob)
+                offsetFor2ndJob = offsetFor1stJob + jobWidth;
 
-        TimeLabels[j]->setText(tmp);
-        TimeLabels[j]->setPos(24+offsetFor2ndJob*20,45);
-        plot.addRect(20+offsetFor2ndJob*20,40,20*job2Width,20,pen,brush);
-        plot.addItem(TimeLabels[j++]);
+            TimeLabels[j]->setText(jobLabelContent);
+            TimeLabels[j]->setPos(labelOffset.x() + offsetFor2ndJob * scale, lineStartingY[1] + labelOffset.y());
+            plot.addRect(lineStartingX + offsetFor2ndJob * scale, lineStartingY[1],job2Width * scale, jobHeight , pen, brush);
+            plot.addItem(TimeLabels[j++]);
 
-        if(MashineCount == 3)
-        {
-        job3Width = third->getJobDuration(i);
+            if(MashineCount == 3)
+            {
+                job3Width = third->getJobDuration(i);
 
-        if( offsetFor2ndJob + job2Width >= offsetFor3rdJob)
-            offsetFor3rdJob = offsetFor2ndJob + job2Width;
+                if( offsetFor2ndJob + job2Width >= offsetFor3rdJob)
+                    offsetFor3rdJob = offsetFor2ndJob + job2Width;
 
-        TimeLabels[j]->setText(tmp);
-        TimeLabels[j]->setPos(24+offsetFor3rdJob*20,65);
-        plot.addRect(20+offsetFor3rdJob*20,60,20*job3Width,20,pen,brush);
-        plot.addItem(TimeLabels[j++]);
-        }
+                TimeLabels[j]->setText(jobLabelContent);
+                TimeLabels[j]->setPos(labelOffset.x() + offsetFor3rdJob * scale, lineStartingY[2] + labelOffset.y());
+                plot.addRect(lineStartingX + offsetFor3rdJob * scale, lineStartingY[2],job3Width * scale, jobHeight , pen, brush);
+                plot.addItem(TimeLabels[j++]);
+            }
         }
 
         pen.setColor(colorTab[i]);
@@ -120,7 +125,7 @@ void Ploter::PrepareLabels(int maxTime, int MashineCount)
 
         MashineLabels[i] = new QGraphicsSimpleTextItem();
         MashineLabels[i]->setText(tmp);
-        MashineLabels[i]->setPos(0,24+i*20);
+        MashineLabels[i]->setPos(2, 24 + i * scale);
         plot.addItem(MashineLabels[i]);
 
         tmp.clear();
@@ -131,7 +136,7 @@ void Ploter::PrepareLabels(int maxTime, int MashineCount)
     {
         TimeLabels[i] = new QGraphicsSimpleTextItem();
         TimeLabels[i]->setText(tmp.setNum(i+1));
-        TimeLabels[i]->setPos(24+i*20,0);
+        TimeLabels[i]->setPos(24+ i * scale,0);
         plot.addItem(TimeLabels[i]);
     }
 }
