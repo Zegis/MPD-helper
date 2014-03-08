@@ -13,7 +13,7 @@ class Ploter
 public:
     Ploter();
 
-    QGraphicsScene* drawSolutionPlot(Mashine *first, Mashine *second, Mashine *third, int JobCount, int MashineCount, QString result);
+    QGraphicsScene* drawSolutionPlot(Mashine ** mashines, int MashineCount, int JobCount, QString result);
 
 private:
 

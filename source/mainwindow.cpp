@@ -17,17 +17,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
     chosenAlgorithm = 0;
 
-    first = new Mashine(1);
-    second = new Mashine(2);
-    third = new Mashine(3);
+    for(int i=0; i<3; ++i)
+    {
+        mashines[i] = new Mashine(i+1);
+    }
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete first;
-    delete second;
-    delete third;
+
+    for(int i=0; i<3; ++i)
+        delete mashines[i];
 }
 
 void MainWindow::on_orderButton_clicked()
@@ -43,9 +44,9 @@ void MainWindow::on_orderButton_clicked()
 
     if(solution.isOptimal())
     {
-        first->setJobs(solution.getOptimalOrder());
-        second->setJobs(solution.getOptimalOrder());
-        if(MashineCount == 3) third->setJobs(solution.getOptimalOrder());
+        for(int i=0; i < MashineCount; ++i)
+            mashines[i]->setJobs(solution.getOptimalOrder());
+
         ShowResults();
 
     }
@@ -55,9 +56,9 @@ void MainWindow::on_orderButton_clicked()
 void MainWindow::ClearData()
 {
     A.clear();
-    first->clear();
-    second->clear();
-    third->clear();
+
+    for(int i=0; i<3; ++i)
+        mashines[i]->clear();
 }
 
 void MainWindow::PrepareJobsSet()
@@ -108,7 +109,7 @@ void MainWindow::ShowResults()
     int JobCount = ui->JobsSpinBox->value();
     int MashineCount = (chosenAlgorithm == 0) ? ui->MashinesSpinBox->value() : 1;
 
-    ui->graphicsView->setScene(plot.drawSolutionPlot(first,second,third,JobCount,MashineCount, result));
+    ui->graphicsView->setScene(plot.drawSolutionPlot(mashines,MashineCount, JobCount, result));
     ui->graphicsView->show();
 
     result.setNum(solution.getTimeCriteria());

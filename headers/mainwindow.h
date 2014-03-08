@@ -46,9 +46,7 @@ private:
 
     int chosenAlgorithm;
 
-    Mashine * first;
-    Mashine * second;
-    Mashine * third;
+    Mashine* mashines[3];
 
     void ClearData();
     void PrepareJobsSet();

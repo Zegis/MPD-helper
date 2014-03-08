@@ -18,13 +18,14 @@ Ploter::Ploter(): scale(20), labelOffset(24,4), jobHeight(19), lineStartingX(20)
     lineStartingY[2] = 60;
 }
 
-QGraphicsScene* Ploter::drawSolutionPlot(Mashine* first, Mashine* second, Mashine* third, int JobCount, int MashineCount , QString result)
+QGraphicsScene* Ploter::drawSolutionPlot(Mashine** mashines, int MashineCount, int JobCount, QString result)
 {
+    int * offsetForJob = new int[MashineCount];
 
-    int offsetFor2ndJob = first->getEndingTimeForJob(1);
-    int offsetFor1stJob = 0;
-    int offsetFor3rdJob = 0;
-    int jobWidth = 0;
+    for(int i=0; i < MashineCount; ++i)
+        offsetForJob[i] = 0;
+
+    int currentMashineJobWidth = 0;
 
     int LabelsCount = JobCount * MashineCount;
 
@@ -44,71 +45,35 @@ QGraphicsScene* Ploter::drawSolutionPlot(Mashine* first, Mashine* second, Mashin
         TimeLabels[i] = new QGraphicsSimpleTextItem();
     }
 
-    int j=0;
+    int labelIdxj=0;
     for(int i=1; i < JobCount+1; ++i)
     {
 
-        jobLabelContent.setNum(first->getJobId(i));
+        jobLabelContent.setNum(mashines[0]->getJobId(i));
         jobLabelContent.insert(0,"Z");
 
-        jobWidth = first->getJobDuration(i);
-
-        TimeLabels[j]->setText(jobLabelContent);
-        TimeLabels[j]->setPos(labelOffset.x() + offsetFor1stJob * scale, lineStartingY[0] + labelOffset.y());
-        plot.addRect(lineStartingX + offsetFor1stJob * scale, lineStartingY[0], jobWidth * scale, jobHeight , pen, brush);
-        plot.addItem(TimeLabels[j++]);
-
-        offsetFor1stJob += jobWidth;
-
-        if(MashineCount != 1)
+        for(int j=0; j < MashineCount; ++j)
         {
-            jobWidth = second->getJobDuration(i);
+            currentMashineJobWidth = mashines[j]->getJobDuration(i);
 
-            if( offsetFor1stJob >= offsetFor2ndJob)
-                offsetFor2ndJob = offsetFor1stJob;
+            if( i > 0 && offsetForJob[j-1] >= offsetForJob[j])
+                offsetForJob[j] = offsetForJob[j-1];
 
-            TimeLabels[j]->setText(jobLabelContent);
-            TimeLabels[j]->setPos(labelOffset.x() + offsetFor2ndJob * scale, lineStartingY[1] + labelOffset.y());
-            plot.addRect(lineStartingX + offsetFor2ndJob * scale, lineStartingY[1],jobWidth * scale, jobHeight , pen, brush);
-            plot.addItem(TimeLabels[j++]);
+            TimeLabels[labelIdxj]->setText(jobLabelContent);
+            TimeLabels[labelIdxj]->setPos(labelOffset.x() + offsetForJob[j] * scale, lineStartingY[j] + labelOffset.y());
 
-            offsetFor2ndJob += jobWidth;
+            plot.addRect(lineStartingX + offsetForJob[j] * scale, lineStartingY[j], currentMashineJobWidth * scale, jobHeight , pen, brush);
+            plot.addItem(TimeLabels[labelIdxj++]);
 
-            if(MashineCount == 3)
-            {
-                jobWidth = third->getJobDuration(i);
-
-                if( offsetFor2ndJob >= offsetFor3rdJob)
-                    offsetFor3rdJob = offsetFor2ndJob;
-
-                TimeLabels[j]->setText(jobLabelContent);
-                TimeLabels[j]->setPos(labelOffset.x() + offsetFor3rdJob * scale, lineStartingY[2] + labelOffset.y());
-                plot.addRect(lineStartingX + offsetFor3rdJob * scale, lineStartingY[2],jobWidth * scale, jobHeight , pen, brush);
-                plot.addItem(TimeLabels[j++]);
-
-                offsetFor3rdJob += jobWidth;
-            }
+            offsetForJob[j] += currentMashineJobWidth;
         }
 
         pen.setColor(colorTab[i]);
         brush.setColor(colorTab[i]);
     }
 
-    if(MashineCount == 3)
-    {
-        result.setNum(offsetFor3rdJob);
-        PrepareLabels(offsetFor3rdJob, MashineCount);
-    }
-    else if(MashineCount == 2)
-    {
-        result.setNum(offsetFor2ndJob);
-        PrepareLabels(offsetFor2ndJob, MashineCount);
-    }
-    else
-    {
-        result.setNum(offsetFor1stJob);
-        PrepareLabels(offsetFor1stJob, MashineCount);
-    }
+    result.setNum(offsetForJob[MashineCount-1]);
+    PrepareLabels(offsetForJob[MashineCount-1], MashineCount);
 
     return &plot;
 }
