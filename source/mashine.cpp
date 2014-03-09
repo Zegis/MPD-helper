@@ -1,27 +1,27 @@
 #include "headers/mashine.h"
 
-Mashine::Mashine(int Id)
+Machine::Machine(int Id)
 {
     id = Id;
 }
 
-Mashine::Mashine(int Id, QList<Job *> Jobs)
+Machine::Machine(int Id, QList<Job *> Jobs)
 {
     id = Id;
     jobs = Jobs;
 }
 
-void Mashine::appendJob(Job * newJob)
+void Machine::appendJob(Job * newJob)
 {
     jobs.append(newJob);
 }
 
-void Mashine::setJobs(QList<Job *> Jobs)
+void Machine::setJobs(QList<Job *> Jobs)
 {
     jobs = Jobs;
 }
 
-int Mashine::getEndingTimeForJob(int jobNumber)
+int Machine::getEndingTimeForJob(int jobNumber)
 {
     --jobNumber;
     if(jobNumber >= 0 && jobNumber < jobs.count())
@@ -31,48 +31,48 @@ int Mashine::getEndingTimeForJob(int jobNumber)
         {
             int retValue = 0;
             for(int i=0; i <= jobNumber; ++i)
-                retValue += jobs[i]->getTimeFromMashinePlotting(id);
+                retValue += jobs[i]->getTimeFromMachinePlotting(id);
 
             return retValue;
         }
         else
         {
-            return jobs[jobNumber]->getTimeFromMashinePlotting(id);
+            return jobs[jobNumber]->getTimeFromMachinePlotting(id);
         }
     }
     else
         return 0;
 }
 
-int Mashine::getJobDuration(int jobNumber)
+int Machine::getJobDuration(int jobNumber)
 {
     --jobNumber;
     if(jobNumber >= 0 && jobNumber < jobs.count())
     {
 
-        return jobs[jobNumber]->getTimeFromMashinePlotting(id);
+        return jobs[jobNumber]->getTimeFromMachinePlotting(id);
     }
     else
         return 0;
 }
 
-int Mashine::getEndingTimeForLastJob()
+int Machine::getEndingTimeForLastJob()
 {
     int retValue = 0;
 
     for(int i=0; i < jobs.count(); ++i)
-        retValue += jobs[i]->getTimeFromMashine(id);
+        retValue += jobs[i]->getTimeFromMachine(id);
 
     return retValue;
 }
 
-void Mashine::clear()
+void Machine::clear()
 {
     jobs.clear();
 }
 
 
-int Mashine::getJobId(int jobNumber)
+int Machine::getJobId(int jobNumber)
 {
     --jobNumber;
     return jobs[jobNumber]->getId();

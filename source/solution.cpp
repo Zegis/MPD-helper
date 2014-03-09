@@ -66,20 +66,20 @@ int Solution::getTimeCriteria()
 
     for(int i=0; i<optimalOrder.length(); ++i)
     {
-        jobDuration = optimalOrder[i]->getTimeFromMashinePlotting(1);
+        jobDuration = optimalOrder[i]->getTimeFromMachinePlotting(1);
 
         if(timeBeforeJobStart[0] + jobDuration >= timeBeforeJobStart[1])
            timeBeforeJobStart[1] = timeBeforeJobStart[0] + jobDuration;
 
         timeBeforeJobStart[0] += jobDuration;
 
-        jobDuration = optimalOrder[i]->getTimeFromMashinePlotting(2);
+        jobDuration = optimalOrder[i]->getTimeFromMachinePlotting(2);
         if(timeBeforeJobStart[1] + jobDuration >= timeBeforeJobStart[2])
             timeBeforeJobStart[2] = timeBeforeJobStart[1] + jobDuration;
 
         timeBeforeJobStart[1] += jobDuration;
 
-        jobDuration = optimalOrder[i]->getTimeFromMashinePlotting(3);
+        jobDuration = optimalOrder[i]->getTimeFromMachinePlotting(3);
         timeBeforeJobStart[2] += jobDuration;
     }
 

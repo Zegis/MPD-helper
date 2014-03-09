@@ -13,7 +13,7 @@ class Ploter
 public:
     Ploter();
 
-    QGraphicsScene* drawSolutionPlot(Mashine ** mashines, int MashineCount, int JobCount, QString result);
+    QGraphicsScene* drawSolutionPlot(Machine ** machines, int MachineCount, int JobCount, QString result);
 
 private:
 
@@ -29,7 +29,7 @@ private:
 
     QGraphicsScene plot;
 
-    void PrepareLabels(int maxTime, int MashineCount);
+    void PrepareAxis(int maxTime, int MachineCount);
 
 };
 

@@ -46,15 +46,14 @@ private:
 
     int chosenAlgorithm;
 
-    Mashine* mashines[3];
+    Machine* machines[3];
 
     void ClearData();
     void PrepareJobsSet();
-    void PrepareJobsForJohnson(int jobCount, int MashineCount);
+    void PrepareJobsForJohnson(int jobCount, int MachineCount);
     void PrepareJobsForFifo(int jobCount);
     void ShowResults();
     void ShowError();
-    void PrepareLabels(int maxTime);
 };
 
 #endif // MAINWINDOW_H

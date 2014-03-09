@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     for(int i=0; i<3; ++i)
     {
-        mashines[i] = new Mashine(i+1);
+        machines[i] = new Machine(i+1);
     }
 }
 
@@ -28,7 +28,7 @@ MainWindow::~MainWindow()
     delete ui;
 
     for(int i=0; i<3; ++i)
-        delete mashines[i];
+        delete machines[i];
 }
 
 void MainWindow::on_orderButton_clicked()
@@ -36,16 +36,16 @@ void MainWindow::on_orderButton_clicked()
     ClearData();
     PrepareJobsSet();
 
-    int MashineCount = ui->MashinesSpinBox->value();
+    int MachineCount = ui->MashinesSpinBox->value();
 
 
-    solution = (chosenAlgorithm == 0)? solv.Johnson(A, MashineCount) : solv.Fifo(A);
+    solution = (chosenAlgorithm == 0)? solv.Johnson(A, MachineCount) : solv.Fifo(A);
 
 
     if(solution.isOptimal())
     {
-        for(int i=0; i < MashineCount; ++i)
-            mashines[i]->setJobs(solution.getOptimalOrder());
+        for(int i=0; i < MachineCount; ++i)
+            machines[i]->setJobs(solution.getOptimalOrder());
 
         ShowResults();
 
@@ -58,35 +58,35 @@ void MainWindow::ClearData()
     A.clear();
 
     for(int i=0; i<3; ++i)
-        mashines[i]->clear();
+        machines[i]->clear();
 }
 
 void MainWindow::PrepareJobsSet()
 {
     int JobCount = ui->JobsSpinBox->value();
-    int MashineCount = ui->MashinesSpinBox->value();
+    int MachineCount = ui->MashinesSpinBox->value();
 
     if(chosenAlgorithm == 0)
-        PrepareJobsForJohnson(JobCount,MashineCount);
+        PrepareJobsForJohnson(JobCount,MachineCount);
     else
         PrepareJobsForFifo(JobCount);
 }
 
-void MainWindow::PrepareJobsForJohnson(int jobCount, int MashineCount)
+void MainWindow::PrepareJobsForJohnson(int jobCount, int MachineCount)
 {
-    int timeOnMashine = 0;
+    int timeOnMachine = 0;
 
     for(int i=0; i<jobCount; ++i)
      {
-          A.append(new Job(i+1,MashineCount));
+          A.append(new Job(i+1,MachineCount));
 
-          for(int j=0; j<MashineCount; ++j)
+          for(int j=0; j<MachineCount; ++j)
           {
               if(ui->tableWidget->item(j,i) != NULL)
-                  timeOnMashine = ui->tableWidget->item(j,i)->text().toInt();
+                  timeOnMachine = ui->tableWidget->item(j,i)->text().toInt();
               else
-                  timeOnMashine = 0;
-              A[i]->setTimeOnMashine(timeOnMashine,j+1);
+                  timeOnMachine = 0;
+              A[i]->setTimeOnMachine(timeOnMachine,j+1);
           }
      }
 }
@@ -97,7 +97,7 @@ void MainWindow::PrepareJobsForFifo(int jobCount)
     {
         A.append(new Job(i+1,1));
 
-        A[i]->setTimeOnMashine(ui->tableWidget->item(0,i)->text().toInt(),1);
+        A[i]->setTimeOnMachine(ui->tableWidget->item(0,i)->text().toInt(),1);
         A[i]->setRelaseTime(ui->tableWidget->item(1,i)->text().toInt());
     }
 }
@@ -107,9 +107,9 @@ void MainWindow::ShowResults()
     QString result = solution.getOptimalOrderAsString();
     ui->Orderlabel->setText("Optymalne szeregowanie: " + result);
     int JobCount = ui->JobsSpinBox->value();
-    int MashineCount = (chosenAlgorithm == 0) ? ui->MashinesSpinBox->value() : 1;
+    int MachineCount = (chosenAlgorithm == 0) ? ui->MashinesSpinBox->value() : 1;
 
-    ui->graphicsView->setScene(plot.drawSolutionPlot(mashines,MashineCount, JobCount, result));
+    ui->graphicsView->setScene(plot.drawSolutionPlot(machines,MachineCount, JobCount, result));
     ui->graphicsView->show();
 
     result.setNum(solution.getTimeCriteria());
@@ -120,7 +120,7 @@ void MainWindow::ShowResults()
     else if(solution.getJobSetDominance() == ThirdOverSecond)
         result = "M2 zdominowana przez M3";
 
-    if(MashineCount == 3)
+    if(MachineCount == 3)
         ui->DominanceLabel->setText(result);
     else
         ui->DominanceLabel->setText("");
@@ -162,15 +162,15 @@ void MainWindow::on_actionZapisz_triggered()
     QTextStream fileData(&file);
 
     int JobsCount = ui->JobsSpinBox->value();
-    int MashinesCount = ui->MashinesSpinBox->value();
+    int MachinesCount = ui->MashinesSpinBox->value();
 
     if(file.open(QIODevice::WriteOnly))
     {
-        fileData << JobsCount << " "<< MashinesCount << "\n";
+        fileData << JobsCount << " "<< MachinesCount << "\n";
 
         for(int i=0; i<JobsCount; ++i)
         {
-            for(int j=0; j<MashinesCount; ++j)
+            for(int j=0; j<MachinesCount; ++j)
             {
                 if(ui->tableWidget->item(j,i) != NULL)
                     fileData << ui->tableWidget->item(j,i)->text() << " ";
@@ -198,15 +198,15 @@ void MainWindow::on_actionOtworz_triggered()
 
     if(file.open(QIODevice::ReadOnly))
     {
-        int Jobs, Mashines;
+        int Jobs, Machines;
         QString ValueToInsert;
         fileData >> Jobs;
         ui->JobsSpinBox->setValue(Jobs);
-        fileData >> Mashines;
-        ui->MashinesSpinBox->setValue(Mashines);
+        fileData >> Machines;
+        ui->MashinesSpinBox->setValue(Machines);
 
         for(int i=0; i< Jobs; ++i)
-            for(int j=0; j < Mashines; ++j)
+            for(int j=0; j < Machines; ++j)
             {
                 fileData >> ValueToInsert;
                 if(ui->tableWidget->item(j,i) == NULL)

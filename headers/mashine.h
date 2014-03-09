@@ -6,7 +6,7 @@
 #include "headers/job.h"
 #include "dominance.h"
 
-class Mashine
+class Machine
 {
 private:
 
@@ -14,8 +14,8 @@ private:
     QList<Job*> jobs;
 
 public:
-    Mashine(int Id);
-    Mashine(int Id, QList<Job*> Jobs);
+    Machine(int Id);
+    Machine(int Id, QList<Job*> Jobs);
 
     void setJobs(QList<Job*> Jobs);
 

@@ -5,21 +5,21 @@ class Job
 {
 private:
     int id;
-    int numberOfMashines;
-    int * timesOnMashines;
+    int numberOfMachines;
+    int * timesOnMachines;
 
     int r;
 
 public:
-    Job(int Id, int NnumberOfMashines);
+    Job(int Id, int NumberOfMachines);
     ~Job();
     int getId();
 
-    void setTimeOnMashine(int time, int mashine);
-    int getTimeFromMashine(int mashine);
-    int getTimeFromMashinePlotting(int mashine);
+    void setTimeOnMachine(int time, int machine);
+    int getTimeFromMachine(int machine);
+    int getTimeFromMachinePlotting(int machine);
 
-    bool TimeOnSecondMashineGreater();
+    bool TimeOnSecondMachineGreater();
 
     void setRelaseTime(int relase);
     int getRelaseTime();

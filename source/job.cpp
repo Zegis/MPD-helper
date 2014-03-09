@@ -3,12 +3,12 @@
 Job::Job(int Id, int NumberOfMashines)
 {
     id = Id;
-    numberOfMashines = NumberOfMashines;
+    numberOfMachines = NumberOfMashines;
 
-    timesOnMashines = new int[numberOfMashines];
+    timesOnMachines = new int[numberOfMachines];
 
-    for(int i=0; i<numberOfMashines; ++i)
-        timesOnMashines[i] = 0;
+    for(int i=0; i<numberOfMachines; ++i)
+        timesOnMachines[i] = 0;
 }
 
 int Job::getId()
@@ -16,38 +16,38 @@ int Job::getId()
     return id;
 }
 
-void Job::setTimeOnMashine(int time, int mashine)
+void Job::setTimeOnMachine(int time, int machine)
 {
-    --mashine;
-    if(mashine < numberOfMashines && mashine >= 0)
+    --machine;
+    if(machine < numberOfMachines && machine >= 0)
     {
-        timesOnMashines[mashine] = time;
+        timesOnMachines[machine] = time;
     }
 }
 
-int Job::getTimeFromMashine(int mashine)
+int Job::getTimeFromMachine(int machine)
 {
-    --mashine;
-    if(mashine < numberOfMashines && mashine >= 0)
+    --machine;
+    if(machine < numberOfMachines && machine >= 0)
     {
-        if(numberOfMashines != 3)
-            return timesOnMashines[mashine];
-        else if(mashine != 2)
+        if(numberOfMachines != 3)
+            return timesOnMachines[machine];
+        else if(machine != 2)
         {
-            return (timesOnMashines[mashine] + timesOnMashines[mashine+1]);
+            return (timesOnMachines[machine] + timesOnMachines[machine+1]);
         }
     }
 
     return 0;
 }
 
-int Job::getTimeFromMashinePlotting(int mashine)
+int Job::getTimeFromMachinePlotting(int machine)
 {
-    --mashine;
+    --machine;
 
-    if(mashine < numberOfMashines && mashine >= 0)
+    if(machine < numberOfMachines && machine >= 0)
     {
-        return timesOnMashines[mashine];
+        return timesOnMachines[machine];
     }
 
     return 0;
@@ -65,5 +65,5 @@ int Job::getRelaseTime()
 
 Job::~Job()
 {
-    delete [] timesOnMashines;
+    delete [] timesOnMachines;
 }

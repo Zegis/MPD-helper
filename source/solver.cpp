@@ -18,7 +18,7 @@ Solution Solver::Johnson(QList<Job*> jobs, int MashineAmount)
     {
         for(int i=0; i<JobCount;)
         {
-            if(jobs[i]->getTimeFromMashine(1) > jobs[i]->getTimeFromMashine(2))
+            if(jobs[i]->getTimeFromMachine(1) > jobs[i]->getTimeFromMachine(2))
             {
                 Job* tmp = jobs[i];
 
@@ -47,9 +47,9 @@ bool Solver::JohnsonCondition(QList<Job *> A)
     int JobCount = A.length();
     for(int i=0; i < JobCount-1; ++i)
     {
-        cmp1 = ( A[i]->getTimeFromMashinePlotting(1) < A[i+1]->getTimeFromMashinePlotting(2) ) ? A[i]->getTimeFromMashinePlotting(1) : A[i+1]->getTimeFromMashinePlotting(2);
+        cmp1 = ( A[i]->getTimeFromMachinePlotting(1) < A[i+1]->getTimeFromMachinePlotting(2) ) ? A[i]->getTimeFromMachinePlotting(1) : A[i+1]->getTimeFromMachinePlotting(2);
 
-        cmp2 = (A[i+1]->getTimeFromMashinePlotting(1)) < A[i]->getTimeFromMashinePlotting(2) ? A[i+1]->getTimeFromMashinePlotting(1) : A[i]->getTimeFromMashinePlotting(2) ;
+        cmp2 = (A[i+1]->getTimeFromMachinePlotting(1)) < A[i]->getTimeFromMachinePlotting(2) ? A[i+1]->getTimeFromMachinePlotting(1) : A[i]->getTimeFromMachinePlotting(2) ;
 
         if(cmp1 > cmp2)
             return false;
@@ -62,18 +62,18 @@ Dominance Solver::CheckDominance(QList<Job *> A)
 {
     Dominance ret = None;
 
-    int maxP2 = A[0]->getTimeFromMashinePlotting(2);
-    int minP1 = A[0]->getTimeFromMashinePlotting(1);
-    int minP3 = A[0]->getTimeFromMashinePlotting(3);;
+    int maxP2 = A[0]->getTimeFromMachinePlotting(2);
+    int minP1 = A[0]->getTimeFromMachinePlotting(1);
+    int minP3 = A[0]->getTimeFromMachinePlotting(3);;
 
 
     int JobCount = A.length();
 
     for(int i=1; i<JobCount; ++i)
     {
-        if (A[i]->getTimeFromMashinePlotting(2) > maxP2) maxP2 = A[i]->getTimeFromMashinePlotting(2);
-        if (A[i]->getTimeFromMashinePlotting(1) < minP1) minP1 = A[i]->getTimeFromMashinePlotting(1);
-        if (A[i]->getTimeFromMashinePlotting(3) < minP3) minP3 = A[i]->getTimeFromMashinePlotting(3);
+        if (A[i]->getTimeFromMachinePlotting(2) > maxP2) maxP2 = A[i]->getTimeFromMachinePlotting(2);
+        if (A[i]->getTimeFromMachinePlotting(1) < minP1) minP1 = A[i]->getTimeFromMachinePlotting(1);
+        if (A[i]->getTimeFromMachinePlotting(3) < minP3) minP3 = A[i]->getTimeFromMachinePlotting(3);
     }
 
     if(minP1 >= maxP2)
@@ -93,7 +93,7 @@ void Solver::sortJobsAccordingToMashine(QList<Job*>* jobs, int mashineId, int op
         for(int i=0; i < jobs->size(); ++i)
             for(int j=0; j < jobs->size() - 1 - i; ++j)
             {
-                if((*jobs)[j]->getTimeFromMashine(mashineId) > (*jobs)[j+1]->getTimeFromMashine(mashineId))
+                if((*jobs)[j]->getTimeFromMachine(mashineId) > (*jobs)[j+1]->getTimeFromMachine(mashineId))
                     jobs->swap(j,j+1);
             }
     }
@@ -102,7 +102,7 @@ void Solver::sortJobsAccordingToMashine(QList<Job*>* jobs, int mashineId, int op
         for(int i=0; i < jobs->size(); ++i)
             for(int j=0; j < jobs->size() - 1 - i; ++j)
             {
-                if((*jobs)[j]->getTimeFromMashine(mashineId) < (*jobs)[j+1]->getTimeFromMashine(mashineId))
+                if((*jobs)[j]->getTimeFromMachine(mashineId) < (*jobs)[j+1]->getTimeFromMachine(mashineId))
                     jobs->swap(j,j+1);
             }
     }

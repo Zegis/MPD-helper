@@ -18,16 +18,16 @@ Ploter::Ploter(): scale(20), labelOffset(24,4), jobHeight(19), lineStartingX(20)
     lineStartingY[2] = 60;
 }
 
-QGraphicsScene* Ploter::drawSolutionPlot(Mashine** mashines, int MashineCount, int JobCount, QString result)
+QGraphicsScene* Ploter::drawSolutionPlot(Machine** machines, int MachineCount, int JobCount, QString result)
 {
-    int * offsetForJob = new int[MashineCount];
+    int * offsetForJob = new int[MachineCount];
 
-    for(int i=0; i < MashineCount; ++i)
+    for(int i=0; i < MachineCount; ++i)
         offsetForJob[i] = 0;
 
     int currentMashineJobWidth = 0;
 
-    int LabelsCount = JobCount * MashineCount;
+    int LabelsCount = JobCount * MachineCount;
 
     plot.clear();
     plot.setSceneRect(0,0,356,86);
@@ -48,12 +48,12 @@ QGraphicsScene* Ploter::drawSolutionPlot(Mashine** mashines, int MashineCount, i
     int labelIdxj=0;
     for(int i=1; i < JobCount+1; ++i)
     {
-        for(int j=0; j < MashineCount; ++j)
+        for(int j=0; j < MachineCount; ++j)
         {
-            jobLabelContent.setNum(mashines[j]->getJobId(i));
+            jobLabelContent.setNum(machines[j]->getJobId(i));
             jobLabelContent.insert(0,"Z");
 
-            currentMashineJobWidth = mashines[j]->getJobDuration(i);
+            currentMashineJobWidth = machines[j]->getJobDuration(i);
 
             if( i > 0 && offsetForJob[j-1] >= offsetForJob[j])
                 offsetForJob[j] = offsetForJob[j-1];
@@ -71,18 +71,18 @@ QGraphicsScene* Ploter::drawSolutionPlot(Mashine** mashines, int MashineCount, i
         brush.setColor(colorTab[i]);
     }
 
-    result.setNum(offsetForJob[MashineCount-1]);
-    PrepareLabels(offsetForJob[MashineCount-1], MashineCount);
+    result.setNum(offsetForJob[MachineCount-1]);
+    PrepareAxis(offsetForJob[MachineCount-1], MachineCount);
 
     return &plot;
 }
 
-void Ploter::PrepareLabels(int maxTime, int MashineCount)
+void Ploter::PrepareAxis(int maxTime, int MachineCount)
 {
     QString tmp;
-    QGraphicsSimpleTextItem **MashineLabels = new QGraphicsSimpleTextItem*[MashineCount];
+    QGraphicsSimpleTextItem **MashineLabels = new QGraphicsSimpleTextItem*[MachineCount];
 
-    for(int i=0; i < MashineCount; ++i)
+    for(int i=0; i < MachineCount; ++i)
     {
         tmp.setNum(i+1);
         tmp.insert(0,"M");
