@@ -48,12 +48,11 @@ QGraphicsScene* Ploter::drawSolutionPlot(Mashine** mashines, int MashineCount, i
     int labelIdxj=0;
     for(int i=1; i < JobCount+1; ++i)
     {
-
-        jobLabelContent.setNum(mashines[0]->getJobId(i));
-        jobLabelContent.insert(0,"Z");
-
         for(int j=0; j < MashineCount; ++j)
         {
+            jobLabelContent.setNum(mashines[j]->getJobId(i));
+            jobLabelContent.insert(0,"Z");
+
             currentMashineJobWidth = mashines[j]->getJobDuration(i);
 
             if( i > 0 && offsetForJob[j-1] >= offsetForJob[j])
