@@ -1,6 +1,7 @@
 #ifndef SOLUTION_H
 #define SOLUTION_H
 
+#include<QVector>
 #include <QList>
 #include <QString>
 #include "job.h"
@@ -11,20 +12,21 @@ class Solution
 public:
     Solution();
     Solution(QList<Job*> solution, Dominance setDominance);
+    Solution(QList<Job *> solution, int NumberOfMachines, Dominance setDominance);
     Solution(QList<Job*> solution);
     Solution(QString errorMsg);
 
-    QList<Job*> getOptimalOrder();
-    QString getOptimalOrderAsString();
+    QList<Job*> getOptimalOrderForMachine(int MachineId);
+    QString getOptimalOrderAsStringForMachine(int MachineId);
 
     Dominance getJobSetDominance();
-    int getTimeCriteria();
+    int getTimeCriteriaForMachine(int MachineId);
 
     bool isOptimal();
     QString getErrorMsg();
 
 private:
-    QList<Job*> optimalOrder;
+    QVector< QList<Job*> > optimalOrder;
     Dominance jobSetDominance;
     QString error;
 

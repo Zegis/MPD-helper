@@ -9,7 +9,21 @@ Solution::Solution()
 
 Solution::Solution(QList<Job *> solution, Dominance setDominance)
 {
-    optimalOrder = solution;
+    optimalOrder.resize(3);
+    optimalOrder[0] = solution;
+    jobSetDominance = setDominance;
+
+    solutionIsOptimal = true;
+    error = "";
+}
+
+Solution::Solution(QList<Job *> solution, int NumberOfMachines, Dominance setDominance)
+{
+    optimalOrder.resize(NumberOfMachines);
+
+    for(int i=0; i < NumberOfMachines; ++i)
+        optimalOrder[i] = solution;
+
     jobSetDominance = setDominance;
 
     solutionIsOptimal = true;
@@ -18,7 +32,8 @@ Solution::Solution(QList<Job *> solution, Dominance setDominance)
 
 Solution::Solution(QList<Job*> solution)
 {
-    optimalOrder = solution;
+    optimalOrder.resize(1);
+    optimalOrder[0] = solution;
     jobSetDominance = None;
 
     solutionIsOptimal = true;
@@ -32,18 +47,18 @@ Solution::Solution(QString errorMsg)
     jobSetDominance = None;
 }
 
-QList<Job*> Solution::getOptimalOrder()
+QList<Job*> Solution::getOptimalOrderForMachine(int MachineId)
 {
-    return optimalOrder;
+    return optimalOrder[MachineId];
 }
 
-QString Solution::getOptimalOrderAsString()
+QString Solution::getOptimalOrderAsStringForMachine(int MachineId)
 {
     QString retString, tmp;
 
-    for(int i=0; i < optimalOrder.length(); ++i)
+    for(int i=0; i < optimalOrder[MachineId].length(); ++i)
     {
-        tmp.setNum(optimalOrder[i]->getId());
+        tmp.setNum(optimalOrder[MachineId][i]->getId());
         retString.append(tmp);
     }
 
@@ -55,7 +70,7 @@ Dominance Solution::getJobSetDominance()
     return jobSetDominance;
 }
 
-int Solution::getTimeCriteria()
+int Solution::getTimeCriteriaForMachine(int MachineId)
 {
     int ret = 1;
     int jobDuration = 0;
@@ -64,22 +79,22 @@ int Solution::getTimeCriteria()
     for(int i=0; i<3; ++i)
         timeBeforeJobStart[i] = 0;
 
-    for(int i=0; i<optimalOrder.length(); ++i)
+    for(int i=0; i<optimalOrder[MachineId].length(); ++i)
     {
-        jobDuration = optimalOrder[i]->getTimeFromMachinePlotting(1);
+        jobDuration = optimalOrder[MachineId][i]->getTimeFromMachinePlotting(1);
 
         if(timeBeforeJobStart[0] + jobDuration >= timeBeforeJobStart[1])
            timeBeforeJobStart[1] = timeBeforeJobStart[0] + jobDuration;
 
         timeBeforeJobStart[0] += jobDuration;
 
-        jobDuration = optimalOrder[i]->getTimeFromMachinePlotting(2);
+        jobDuration = optimalOrder[MachineId][i]->getTimeFromMachinePlotting(2);
         if(timeBeforeJobStart[1] + jobDuration >= timeBeforeJobStart[2])
             timeBeforeJobStart[2] = timeBeforeJobStart[1] + jobDuration;
 
         timeBeforeJobStart[1] += jobDuration;
 
-        jobDuration = optimalOrder[i]->getTimeFromMachinePlotting(3);
+        jobDuration = optimalOrder[MachineId][i]->getTimeFromMachinePlotting(3);
         timeBeforeJobStart[2] += jobDuration;
     }
 

@@ -36,16 +36,24 @@ void MainWindow::on_orderButton_clicked()
     ClearData();
     PrepareJobsSet();
 
-    int MachineCount = ui->MashinesSpinBox->value();
+    int MachineCount;
 
-
-    solution = (chosenAlgorithm == 0)? solv.Johnson(A, MachineCount) : solv.Fifo(A);
+    if(chosenAlgorithm == 0)
+    {
+        MachineCount = ui->MashinesSpinBox->value();
+        solution = solv.Johnson(A, MachineCount);
+    }
+    else
+    {
+        MachineCount = 1;
+        solution = solv.Fifo(A);
+    }
 
 
     if(solution.isOptimal())
     {
         for(int i=0; i < MachineCount; ++i)
-            machines[i]->setJobs(solution.getOptimalOrder());
+            machines[i]->setJobs(solution.getOptimalOrderForMachine(i));
 
         ShowResults();
 
@@ -104,7 +112,7 @@ void MainWindow::PrepareJobsForFifo(int jobCount)
 
 void MainWindow::ShowResults()
 {
-    QString result = solution.getOptimalOrderAsString();
+    QString result = solution.getOptimalOrderAsStringForMachine(0);
     ui->Orderlabel->setText("Optymalne szeregowanie: " + result);
     int JobCount = ui->JobsSpinBox->value();
     int MachineCount = (chosenAlgorithm == 0) ? ui->MashinesSpinBox->value() : 1;
@@ -112,7 +120,7 @@ void MainWindow::ShowResults()
     ui->graphicsView->setScene(plot.drawSolutionPlot(machines,MachineCount, JobCount, result));
     ui->graphicsView->show();
 
-    result.setNum(solution.getTimeCriteria());
+    result.setNum(solution.getTimeCriteriaForMachine(0));
     ui->ResultLabel->setText("Wartosc funkcji kryterialnej: " + result);
 
     if(solution.getJobSetDominance() == FirstOverSecond)
