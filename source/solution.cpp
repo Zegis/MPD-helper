@@ -81,8 +81,19 @@ Dominance Solution::getJobSetDominance()
 
 int Solution::getTimeCriteriaForMachine(int MachineId)
 {
-    int ret = 1;
+
+    int ret = 0;
     int jobDuration = 0;
+
+    if(optimalOrder.size() == 1)
+    {
+
+        for(int i=0; i < optimalOrder[0].size(); ++i)
+            ret += optimalOrder[0][i]->getJobDuration(1);
+
+        return ret;
+    }
+
     int timeBeforeJobStart[3];
 
     for(int i=0; i<3; ++i)

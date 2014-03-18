@@ -55,7 +55,7 @@ QGraphicsScene* Ploter::drawSolutionPlot(Machine** machines, int MachineCount, i
 
             currentMashineJobWidth = machines[j]->getJobDuration(i);
 
-            if( i > 0 && offsetForJob[j-1] >= offsetForJob[j])
+            if( j > 0 && offsetForJob[j-1] >= offsetForJob[j])
                 offsetForJob[j] = offsetForJob[j-1];
 
             TimeLabels[labelIdxj]->setText(jobLabelContent);
