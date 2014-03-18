@@ -1,17 +1,17 @@
 MPD Helper
 ==========
 
-Simple app to sequence jobs on procesors via sequencing alghoritms, done with C++ and Qt.
+Simple app to sequence jobs on processors via sequencing algorithms, done with C++ and Qt.
 
 ###What's done?
-Simplest of all alghoritms - [Johnson's alghoritm for sequencing](http://dev.kofun.pl/algorithms/johnsons-sequencing-algorithm/).
-Simple Qt UI with plotting the resoult.
+- Simplest of all alghoritms - [Johnson's algorithm for sequencing](http://dev.kofun.pl/algorithms/johnsons-sequencing-algorithm/).
+- Simple Qt UI with plotting the result.
+- Longest Processing Time Algorithm,
 
 ###To do:
-- Longest Processing Time Alghoritm,
-- Reverse Processing Time Alghoritm,
-- Hu Alghoritm
-- Liu Alghoritm
+- Reverse Processing Time Algorithm,
+- Hu Algorithm
+- Liu Algorithm
 
 ### Author
 [Zegis](http://dev.kofun.pl/)
