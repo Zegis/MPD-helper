@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setColumnWidth(0,40);
     ui->AlgorithmBox->addItem("Johnson");
     ui->AlgorithmBox->addItem("FIFO");
+    ui->AlgorithmBox->addItem("LTP");
     ui->tableWidget->verticalHeader()->show();
 
     chosenAlgorithm = 0;
@@ -40,13 +41,18 @@ void MainWindow::on_orderButton_clicked()
 
     if(chosenAlgorithm == 0)
     {
-        MachineCount = ui->MashinesSpinBox->value();
+        MachineCount = ui->MachinesSpinBox->value();
         solution = solv.Johnson(A, MachineCount);
     }
-    else
+    else if(chosenAlgorithm == 1)
     {
         MachineCount = 1;
         solution = solv.Fifo(A);
+    }
+    else if(chosenAlgorithm == 2)
+    {
+        MachineCount = ui->MachinesSpinBox->value();
+        solution = solv.LPT(A,MachineCount);
     }
 
 
@@ -72,12 +78,14 @@ void MainWindow::ClearData()
 void MainWindow::PrepareJobsSet()
 {
     int JobCount = ui->JobsSpinBox->value();
-    int MachineCount = ui->MashinesSpinBox->value();
+    int MachineCount = ui->MachinesSpinBox->value();
 
     if(chosenAlgorithm == 0)
         PrepareJobsForJohnson(JobCount,MachineCount);
-    else
+    else if(chosenAlgorithm == 1)
         PrepareJobsForFifo(JobCount);
+    else
+        PrepareJobsForParallel(JobCount);
 }
 
 void MainWindow::PrepareJobsForJohnson(int jobCount, int MachineCount)
@@ -110,14 +118,27 @@ void MainWindow::PrepareJobsForFifo(int jobCount)
     }
 }
 
+void MainWindow::PrepareJobsForParallel(int jobCount)
+{
+    for(int i=0; i<jobCount; ++i)
+    {
+        A.append(new Job(i+1,1));
+
+        A[i]->setTimeOnMachine(ui->tableWidget->item(0,i)->text().toInt(),1);
+    }
+}
+
 void MainWindow::ShowResults()
 {
     QString result = solution.getOptimalOrderAsStringForMachine(0);
     ui->Orderlabel->setText("Optymalne szeregowanie: " + result);
     int JobCount = ui->JobsSpinBox->value();
-    int MachineCount = (chosenAlgorithm == 0) ? ui->MashinesSpinBox->value() : 1;
+    int MachineCount = (chosenAlgorithm != 1) ? ui->MachinesSpinBox->value() : 1;
 
-    ui->graphicsView->setScene(plot.drawSolutionPlot(machines,MachineCount, JobCount, result));
+    if(chosenAlgorithm != 2)
+        ui->graphicsView->setScene(plot.drawSolutionPlot(machines,MachineCount, JobCount));
+    else
+        ui->graphicsView->setScene(plot.drawParallelPlot(machines,MachineCount, JobCount));
     ui->graphicsView->show();
 
     result.setNum(solution.getTimeCriteriaForMachine(0));
@@ -148,17 +169,20 @@ void MainWindow::on_JobsSpinBox_valueChanged(int arg1)
         ui->tableWidget->setColumnWidth(i,40);
 }
 
-void MainWindow::on_MashinesSpinBox_valueChanged(int arg1)
+void MainWindow::on_MachinesSpinBox_valueChanged(int arg1)
 {
-    ui->tableWidget->setRowCount(arg1);
-    ui->tableWidget->repaint();
-    QString tmp;
-    QTextStream str(&tmp);
-    for(int i=0; i< arg1; ++i)
+    if(chosenAlgorithm == 0)
     {
-        str << "P[" << i+1 << "];";
+        ui->tableWidget->setRowCount(arg1);
+        ui->tableWidget->repaint();
+        QString tmp;
+        QTextStream str(&tmp);
+        for(int i=0; i< arg1; ++i)
+        {
+            str << "P[" << i+1 << "];";
+        }
+        ui->tableWidget->setVerticalHeaderLabels(tmp.split(";"));
     }
-    ui->tableWidget->setVerticalHeaderLabels(tmp.split(";"));
 }
 
 void MainWindow::on_actionZapisz_triggered()
@@ -170,7 +194,7 @@ void MainWindow::on_actionZapisz_triggered()
     QTextStream fileData(&file);
 
     int JobsCount = ui->JobsSpinBox->value();
-    int MachinesCount = ui->MashinesSpinBox->value();
+    int MachinesCount = ui->MachinesSpinBox->value();
 
     if(file.open(QIODevice::WriteOnly))
     {
@@ -211,7 +235,7 @@ void MainWindow::on_actionOtworz_triggered()
         fileData >> Jobs;
         ui->JobsSpinBox->setValue(Jobs);
         fileData >> Machines;
-        ui->MashinesSpinBox->setValue(Machines);
+        ui->MachinesSpinBox->setValue(Machines);
 
         for(int i=0; i< Jobs; ++i)
             for(int j=0; j < Machines; ++j)
@@ -240,10 +264,11 @@ void MainWindow::on_AlgorithmBox_currentIndexChanged(int index)
     chosenAlgorithm = index;
 
     if(chosenAlgorithm == 0)
-        ui->MashinesSpinBox->setValue(2);
-    else
+        ui->MachinesSpinBox->setValue(2);
+    else if(chosenAlgorithm == 1)
     {
         QStringList newLabels = (QStringList() << "P" << "R");
         ui->tableWidget->setVerticalHeaderLabels(newLabels);
     }
+
 }

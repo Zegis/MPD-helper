@@ -4,17 +4,17 @@ Solver::Solver()
 {
 }
 
-Solution Solver::Johnson(QList<Job*> jobs, int MashineAmount)
+Solution Solver::Johnson(QList<Job*> jobs, int MachineAmount)
 {
     QList<Job*> B;
 
     int JobCount = jobs.length();
     Dominance dominance = None;
 
-    if(MashineAmount == 3)
+    if(MachineAmount == 3)
         dominance = CheckDominance(jobs);
 
-    if(MashineAmount != 3 || dominance != None)
+    if(MachineAmount != 3 || dominance != None)
     {
         for(int i=0; i<JobCount;)
         {
@@ -30,11 +30,11 @@ Solution Solver::Johnson(QList<Job*> jobs, int MashineAmount)
                 ++i;
         }
 
-        if(jobs.size() > 0) sortJobsAccordingToMashine(&jobs,1,1);
-        if(B.size() > 0) sortJobsAccordingToMashine(&B,2,0);
+        if(jobs.size() > 0) sortJobsAccordingToMachine(&jobs,1,1);
+        if(B.size() > 0) sortJobsAccordingToMachine(&B,2,0);
 
         if(JohnsonCondition(jobs+B))
-            return Solution(jobs+B, MashineAmount, dominance);
+            return Solution(jobs+B, MachineAmount, dominance);
         else
             return Solution("Brak optymalnego rozwiązania");
     }
@@ -86,7 +86,7 @@ Dominance Solver::CheckDominance(QList<Job *> A)
     return ret;
 }
 
-void Solver::sortJobsAccordingToMashine(QList<Job*>* jobs, int mashineId, int option)
+void Solver::sortJobsAccordingToMachine(QList<Job*>* jobs, int mashineId, int option)
 {
     if(option == 1) // nonRising
     {
@@ -126,4 +126,59 @@ void Solver::sortJobsDescendingBasedOnR(QList<Job *> *JobsToSort)
 
         --n;
     }while(n > 1);
+}
+
+Solution Solver::LPT(QList<Job *> jobs, int MachineAmount)
+{
+    QVector< QList<Job*> > orderedJobs(MachineAmount);
+    int* freeTimeOnMachine = new int[MachineAmount];
+
+    int MachineToAssignJob = 0;
+
+    for(int i=0; i<MachineAmount; ++i)
+        freeTimeOnMachine[i] = 0;
+
+    sortJobsAscendingBasedOnP(&jobs);
+
+    for(int i=0; i < jobs.length(); ++i)
+    {
+        MachineToAssignJob = FindFreeMachine(freeTimeOnMachine, MachineAmount);
+
+        orderedJobs[MachineToAssignJob].append(jobs[i]);
+
+        freeTimeOnMachine[MachineToAssignJob] += jobs[i]->getTimeFromMachinePlotting(1);
+    }
+
+    delete[] freeTimeOnMachine;
+
+    return Solution(orderedJobs);
+}
+
+void Solver::sortJobsAscendingBasedOnP(QList<Job *> *JobsToSort)
+{
+    int n = JobsToSort->size();
+    do
+    {
+        for(int i=0; i < n -1; ++i)
+            if( (*JobsToSort)[i]->getTimeFromMachinePlotting(1) < (*JobsToSort)[i+1]->getTimeFromMachinePlotting(1))
+                JobsToSort->swap(i, i+1);
+
+        --n;
+    }while(n > 1);
+}
+
+int Solver::FindFreeMachine(int* MachineTimes, int MachineAmount)
+{
+    if(MachineAmount == 1)
+        return 0;
+    else
+    {
+        int ret = 0;
+        for(int i=1; i < MachineAmount; ++i)
+        {
+            if( MachineTimes[i] < MachineTimes[ret])
+                ret = i;
+        }
+        return ret;
+    }
 }

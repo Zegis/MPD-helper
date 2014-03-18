@@ -66,6 +66,11 @@ int Machine::getEndingTimeForLastJob()
     return retValue;
 }
 
+int Machine::getNumberOfJobs()
+{
+    return jobs.length();
+}
+
 void Machine::clear()
 {
     jobs.clear();
@@ -74,6 +79,6 @@ void Machine::clear()
 
 int Machine::getJobId(int jobNumber)
 {
-    --jobNumber;
+    if(jobNumber != 0) --jobNumber;
     return jobs[jobNumber]->getId();
 }

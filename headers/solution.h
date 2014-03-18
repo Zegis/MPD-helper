@@ -13,6 +13,7 @@ public:
     Solution();
     Solution(QList<Job*> solution, Dominance setDominance);
     Solution(QList<Job *> solution, int NumberOfMachines, Dominance setDominance);
+    Solution(QVector< QList<Job*> > solution);
     Solution(QList<Job*> solution);
     Solution(QString errorMsg);
 

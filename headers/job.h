@@ -18,6 +18,7 @@ public:
     void setTimeOnMachine(int time, int machine);
     int getTimeFromMachine(int machine);
     int getTimeFromMachinePlotting(int machine);
+    int getJobDuration(int machine);
 
     bool TimeOnSecondMachineGreater();
 

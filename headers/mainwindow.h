@@ -26,7 +26,7 @@ private slots:
 
     void on_JobsSpinBox_valueChanged(int arg1);
 
-    void on_MashinesSpinBox_valueChanged(int arg1);
+    void on_MachinesSpinBox_valueChanged(int arg1);
 
     void on_actionZapisz_triggered();
 
@@ -52,6 +52,7 @@ private:
     void PrepareJobsSet();
     void PrepareJobsForJohnson(int jobCount, int MachineCount);
     void PrepareJobsForFifo(int jobCount);
+    void PrepareJobsForParallel(int jobCount);
     void ShowResults();
     void ShowError();
 };

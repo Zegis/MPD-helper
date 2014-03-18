@@ -29,6 +29,8 @@ public:
 
     int getEndingTimeForLastJob();
 
+    int getNumberOfJobs();
+
     void clear();
 };
 

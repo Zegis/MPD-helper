@@ -18,7 +18,7 @@ Ploter::Ploter(): scale(20), labelOffset(24,4), jobHeight(19), lineStartingX(20)
     lineStartingY[2] = 60;
 }
 
-QGraphicsScene* Ploter::drawSolutionPlot(Machine** machines, int MachineCount, int JobCount, QString result)
+QGraphicsScene* Ploter::drawSolutionPlot(Machine** machines, int MachineCount, int JobCount)
 {
     int * offsetForJob = new int[MachineCount];
 
@@ -71,7 +71,6 @@ QGraphicsScene* Ploter::drawSolutionPlot(Machine** machines, int MachineCount, i
         brush.setColor(colorTab[i]);
     }
 
-    result.setNum(offsetForJob[MachineCount-1]);
     PrepareAxis(offsetForJob[MachineCount-1], MachineCount);
 
     return &plot;
@@ -103,4 +102,61 @@ void Ploter::PrepareAxis(int maxTime, int MachineCount)
         TimeLabels[i]->setPos(24+ i * scale,0);
         plot.addItem(TimeLabels[i]);
     }
+}
+
+QGraphicsScene* Ploter::drawParallelPlot(Machine **machines, int MachineCount, int JobCount)
+{
+    int currentMashineJobWidth = 0;
+
+    int LabelsCount = JobCount;
+    int colorIdx = 0;
+
+    plot.clear();
+    plot.setSceneRect(0,0,356,86);
+
+    QPen pen(colorTab[colorIdx]);
+    QBrush brush(colorTab[colorIdx]);
+
+    QString jobLabelContent;
+    QGraphicsSimpleTextItem **TimeLabels = new QGraphicsSimpleTextItem*[LabelsCount];
+
+    plot.clear();
+
+    for(int i=0; i < LabelsCount; ++i)
+    {
+        TimeLabels[i] = new QGraphicsSimpleTextItem();
+    }
+
+    int labelIdxj=0;
+    int offsetForJob;
+    int maxTime = 0;
+    for(int j=0; j < MachineCount; ++j)
+    {
+        offsetForJob = 0;
+        for(int i=1; i <= machines[j]->getNumberOfJobs(); ++i)
+        {
+            jobLabelContent.setNum(machines[j]->getJobId(i));
+            jobLabelContent.insert(0,"Z");
+
+            currentMashineJobWidth = machines[j]->getJobDuration(i);
+
+            TimeLabels[labelIdxj]->setText(jobLabelContent);
+            TimeLabels[labelIdxj]->setPos(labelOffset.x() + offsetForJob * scale, lineStartingY[j] + labelOffset.y());
+
+            plot.addRect(lineStartingX + offsetForJob * scale, lineStartingY[j], currentMashineJobWidth * scale, jobHeight , pen, brush);
+            plot.addItem(TimeLabels[labelIdxj++]);
+
+            offsetForJob += currentMashineJobWidth;
+
+            if(colorIdx < 10) ++colorIdx;
+            pen.setColor(colorTab[colorIdx]);
+            brush.setColor(colorTab[colorIdx]);
+        }
+
+        if(maxTime < machines[j]->getEndingTimeForLastJob()) maxTime = machines[j]->getEndingTimeForLastJob();
+     }
+
+    PrepareAxis(maxTime, MachineCount);
+
+    return &plot;
 }

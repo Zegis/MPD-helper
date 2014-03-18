@@ -50,6 +50,18 @@ int Job::getTimeFromMachinePlotting(int machine)
         return timesOnMachines[machine];
     }
 
+    return timesOnMachines[0];
+}
+
+int Job::getJobDuration(int machine)
+{
+    --machine;
+
+    if(machine < numberOfMachines && machine >= 0)
+    {
+        return timesOnMachines[machine];
+    }
+
     return 0;
 }
 

@@ -73,7 +73,7 @@
      <string>Szereguj!</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="MashinesSpinBox">
+   <widget class="QSpinBox" name="MachinesSpinBox">
     <property name="geometry">
      <rect>
       <x>80</x>

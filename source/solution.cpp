@@ -30,6 +30,15 @@ Solution::Solution(QList<Job *> solution, int NumberOfMachines, Dominance setDom
     error = "";
 }
 
+Solution::Solution(QVector<QList<Job *> > solution)
+{
+    optimalOrder = solution;
+
+    jobSetDominance = None;
+    solutionIsOptimal = true;
+    error = "";
+}
+
 Solution::Solution(QList<Job*> solution)
 {
     optimalOrder.resize(1);
@@ -81,20 +90,20 @@ int Solution::getTimeCriteriaForMachine(int MachineId)
 
     for(int i=0; i<optimalOrder[MachineId].length(); ++i)
     {
-        jobDuration = optimalOrder[MachineId][i]->getTimeFromMachinePlotting(1);
+        jobDuration = optimalOrder[MachineId][i]->getJobDuration(1);
 
         if(timeBeforeJobStart[0] + jobDuration >= timeBeforeJobStart[1])
            timeBeforeJobStart[1] = timeBeforeJobStart[0] + jobDuration;
 
         timeBeforeJobStart[0] += jobDuration;
 
-        jobDuration = optimalOrder[MachineId][i]->getTimeFromMachinePlotting(2);
+        jobDuration = optimalOrder[MachineId][i]->getJobDuration(2);
         if(timeBeforeJobStart[1] + jobDuration >= timeBeforeJobStart[2])
             timeBeforeJobStart[2] = timeBeforeJobStart[1] + jobDuration;
 
         timeBeforeJobStart[1] += jobDuration;
 
-        jobDuration = optimalOrder[MachineId][i]->getTimeFromMachinePlotting(3);
+        jobDuration = optimalOrder[MachineId][i]->getJobDuration(3);
         timeBeforeJobStart[2] += jobDuration;
     }
 
