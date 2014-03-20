@@ -130,6 +130,11 @@ void Solver::sortJobsDescendingBasedOnR(QList<Job *> *JobsToSort)
 
 Solution Solver::LPT(QList<Job *> jobs, int MachineAmount)
 {
+    return Solution(aproximateSequencing(jobs,MachineAmount));
+}
+
+QVector< QList<Job*> > Solver::aproximateSequencing(QList<Job *> jobs, int MachineAmount)
+{
     QVector< QList<Job*> > orderedJobs(MachineAmount);
     int* freeTimeOnMachine = new int[MachineAmount];
 
@@ -151,7 +156,7 @@ Solution Solver::LPT(QList<Job *> jobs, int MachineAmount)
 
     delete[] freeTimeOnMachine;
 
-    return Solution(orderedJobs);
+    return orderedJobs;
 }
 
 void Solver::sortJobsAscendingBasedOnP(QList<Job *> *JobsToSort)
@@ -165,6 +170,28 @@ void Solver::sortJobsAscendingBasedOnP(QList<Job *> *JobsToSort)
 
         --n;
     }while(n > 1);
+}
+
+Solution Solver::RPT(QList<Job *> jobs, int MachineAmount)
+{
+    QVector< QList<Job*> > orderedJobs = aproximateSequencing(jobs, MachineAmount);
+
+    for(int i=0; i < orderedJobs.size(); ++i)
+        sortJobsDescendingBasedOnP(&orderedJobs[i]);
+
+    return Solution(orderedJobs);
+}
+
+void Solver::sortJobsDescendingBasedOnP(QList<Job *> *JobsToSort)
+{
+    int n = JobsToSort->size();
+    do
+    {
+        for(int i=0; i < n-1; ++i)
+            if( (*JobsToSort)[i]->getTimeFromMachinePlotting(1) > (*JobsToSort)[i+1]->getTimeFromMachinePlotting(1) )
+                JobsToSort->swap(i, i+1);
+        --n;
+    }while(n>1);
 }
 
 int Solver::FindFreeMachine(int* MachineTimes, int MachineAmount)

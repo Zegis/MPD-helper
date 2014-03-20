@@ -13,7 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setColumnWidth(0,40);
     ui->AlgorithmBox->addItem("Johnson");
     ui->AlgorithmBox->addItem("FIFO");
-    ui->AlgorithmBox->addItem("LTP");
+    ui->AlgorithmBox->addItem("LPT");
+    ui->AlgorithmBox->addItem("RPT");
     ui->tableWidget->verticalHeader()->show();
 
     chosenAlgorithm = 0;
@@ -53,6 +54,11 @@ void MainWindow::on_orderButton_clicked()
     {
         MachineCount = ui->MachinesSpinBox->value();
         solution = solv.LPT(A,MachineCount);
+    }
+    else if(chosenAlgorithm == 3)
+    {
+        MachineCount = ui->MachinesSpinBox->value();
+        solution = solv.RPT(A,MachineCount);
     }
 
 
@@ -135,7 +141,7 @@ void MainWindow::ShowResults()
     int JobCount = ui->JobsSpinBox->value();
     int MachineCount = (chosenAlgorithm != 1) ? ui->MachinesSpinBox->value() : 1;
 
-    if(chosenAlgorithm != 2)
+    if(chosenAlgorithm != 2 && chosenAlgorithm != 3)
         ui->graphicsView->setScene(plot.drawSolutionPlot(machines,MachineCount, JobCount));
     else
         ui->graphicsView->setScene(plot.drawParallelPlot(machines,MachineCount, JobCount));

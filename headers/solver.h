@@ -14,6 +14,7 @@ public:
     Solution Johnson(QList<Job *> jobs, int MachineAmount);
     Solution Fifo(QList<Job *> jobs);
     Solution LPT(QList<Job *> jobs, int MachineAmount);
+    Solution RPT(QList<Job *> jobs, int MachineAmount);
 
 private:
     void sortJobsAccordingToMachine(QList<Job*> *JobsToSort, int machineId, int option);
@@ -25,6 +26,9 @@ private:
     int FindFreeMachine(int* MachineTimes, int MachineAmount);
 
     void sortJobsAscendingBasedOnP(QList<Job*> *JobsToSort);
+    void sortJobsDescendingBasedOnP(QList<Job*> *JobsToSort);
+
+    QVector< QList<Job*> > aproximateSequencing(QList<Job *> jobs, int MachineAmount);
 
 };
 
