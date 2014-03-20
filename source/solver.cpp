@@ -143,7 +143,7 @@ QVector< QList<Job*> > Solver::aproximateSequencing(QList<Job *> jobs, int Machi
     for(int i=0; i<MachineAmount; ++i)
         freeTimeOnMachine[i] = 0;
 
-    sortJobsAscendingBasedOnP(&jobs);
+    sortJobs(&jobs, &Solver::AscendingBasedOnProcessingTime);
 
     for(int i=0; i < jobs.length(); ++i)
     {
@@ -157,19 +157,6 @@ QVector< QList<Job*> > Solver::aproximateSequencing(QList<Job *> jobs, int Machi
     delete[] freeTimeOnMachine;
 
     return orderedJobs;
-}
-
-void Solver::sortJobsAscendingBasedOnP(QList<Job *> *JobsToSort)
-{
-    int n = JobsToSort->size();
-    do
-    {
-        for(int i=0; i < n -1; ++i)
-            if( (*JobsToSort)[i]->getTimeFromMachinePlotting(1) < (*JobsToSort)[i+1]->getTimeFromMachinePlotting(1))
-                JobsToSort->swap(i, i+1);
-
-        --n;
-    }while(n > 1);
 }
 
 Solution Solver::RPT(QList<Job *> jobs, int MachineAmount)
@@ -208,4 +195,26 @@ int Solver::FindFreeMachine(int* MachineTimes, int MachineAmount)
         }
         return ret;
     }
+}
+
+void Solver::sortJobs(QList<Job *> *JobsToSort, int (Solver::* comparator)(Job *, Job *))
+{
+    int n = JobsToSort->size();
+    do
+    {
+        for(int i=0; i > n-1; ++i)
+        {
+            if( (this->*comparator)( (*JobsToSort)[i], (*JobsToSort)[i+1]) == 1)
+                    JobsToSort->swap(i,i+1);
+        }
+        --n;
+    }while(n > 1);
+}
+
+int Solver::AscendingBasedOnProcessingTime(Job* A, Job* B)
+{
+    if( A->getTimeFromMachinePlotting(1) < B->getTimeFromMachinePlotting(1) )
+        return 1;
+    else
+        return 0;
 }

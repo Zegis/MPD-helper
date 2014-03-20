@@ -25,10 +25,15 @@ private:
 
     int FindFreeMachine(int* MachineTimes, int MachineAmount);
 
-    void sortJobsAscendingBasedOnP(QList<Job*> *JobsToSort);
     void sortJobsDescendingBasedOnP(QList<Job*> *JobsToSort);
 
     QVector< QList<Job*> > aproximateSequencing(QList<Job *> jobs, int MachineAmount);
+
+    int AscendingBasedOnProcessingTime(Job *A, Job *B);
+
+    void sortJobs(QList<Job*> *JobsToSort, int (Solver::*)(Job *, Job *));
+
+
 
 };
 
