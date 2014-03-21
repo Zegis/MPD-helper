@@ -17,7 +17,7 @@ public:
     Solution RPT(QList<Job *> jobs, int MachineAmount);
 
 private:
-    void sortJobsAccordingToMachine(QList<Job*> *JobsToSort, int machineId, int option);
+
     Dominance CheckDominance(QList<Job*> A);
     bool JohnsonCondition(QList<Job*>A);
 
@@ -25,15 +25,15 @@ private:
 
     int FindFreeMachine(int* MachineTimes, int MachineAmount);
 
-    void sortJobsDescendingBasedOnP(QList<Job*> *JobsToSort);
-
     QVector< QList<Job*> > aproximateSequencing(QList<Job *> jobs, int MachineAmount);
 
-    int AscendingBasedOnProcessingTime(Job *A, Job *B);
+    int AscendingBasedOnProcessingTime(Job *A, Job *B, int MachineToCompare);
 
-    void sortJobs(QList<Job*> *JobsToSort, int (Solver::*)(Job *, Job *));
+    int DescendingBasedOnProcessingTime(Job* A, Job* B, int MachineToCompare);
 
+    int AscendingBasedOnRelase(Job* A, Job* B, int def);
 
+    void sortJobs(QList<Job*> *JobsToSort, int MachineToCompare, int (Solver::*)(Job *, Job *, int));
 
 };
 

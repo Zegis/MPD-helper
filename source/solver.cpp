@@ -30,8 +30,8 @@ Solution Solver::Johnson(QList<Job*> jobs, int MachineAmount)
                 ++i;
         }
 
-        if(jobs.size() > 0) sortJobsAccordingToMachine(&jobs,1,1);
-        if(B.size() > 0) sortJobsAccordingToMachine(&B,2,0);
+        if(jobs.size() > 0) sortJobs(&jobs,1,&Solver::AscendingBasedOnProcessingTime);
+        if(B.size() > 0) sortJobs(&B,2,&Solver::DescendingBasedOnProcessingTime);
 
         if(JohnsonCondition(jobs+B))
             return Solution(jobs+B, MachineAmount, dominance);
@@ -86,31 +86,9 @@ Dominance Solver::CheckDominance(QList<Job *> A)
     return ret;
 }
 
-void Solver::sortJobsAccordingToMachine(QList<Job*>* jobs, int mashineId, int option)
-{
-    if(option == 1) // nonRising
-    {
-        for(int i=0; i < jobs->size(); ++i)
-            for(int j=0; j < jobs->size() - 1 - i; ++j)
-            {
-                if((*jobs)[j]->getTimeFromMachine(mashineId) > (*jobs)[j+1]->getTimeFromMachine(mashineId))
-                    jobs->swap(j,j+1);
-            }
-    }
-    else if (option == 0) // nonDecreasing
-    {
-        for(int i=0; i < jobs->size(); ++i)
-            for(int j=0; j < jobs->size() - 1 - i; ++j)
-            {
-                if((*jobs)[j]->getTimeFromMachine(mashineId) < (*jobs)[j+1]->getTimeFromMachine(mashineId))
-                    jobs->swap(j,j+1);
-            }
-    }
-}
-
 Solution Solver::Fifo(QList<Job *> jobs)
 {
-    sortJobsDescendingBasedOnR(&jobs);
+    sortJobs(&jobs,0,&Solver::AscendingBasedOnRelase);
 
     return Solution(jobs);
 }
@@ -143,7 +121,7 @@ QVector< QList<Job*> > Solver::aproximateSequencing(QList<Job *> jobs, int Machi
     for(int i=0; i<MachineAmount; ++i)
         freeTimeOnMachine[i] = 0;
 
-    sortJobs(&jobs, &Solver::AscendingBasedOnProcessingTime);
+    sortJobs(&jobs,1, &Solver::DescendingBasedOnProcessingTime);
 
     for(int i=0; i < jobs.length(); ++i)
     {
@@ -164,21 +142,9 @@ Solution Solver::RPT(QList<Job *> jobs, int MachineAmount)
     QVector< QList<Job*> > orderedJobs = aproximateSequencing(jobs, MachineAmount);
 
     for(int i=0; i < orderedJobs.size(); ++i)
-        sortJobsDescendingBasedOnP(&orderedJobs[i]);
+        sortJobs(&orderedJobs[i], 1, &Solver::AscendingBasedOnProcessingTime);
 
     return Solution(orderedJobs);
-}
-
-void Solver::sortJobsDescendingBasedOnP(QList<Job *> *JobsToSort)
-{
-    int n = JobsToSort->size();
-    do
-    {
-        for(int i=0; i < n-1; ++i)
-            if( (*JobsToSort)[i]->getTimeFromMachinePlotting(1) > (*JobsToSort)[i+1]->getTimeFromMachinePlotting(1) )
-                JobsToSort->swap(i, i+1);
-        --n;
-    }while(n>1);
 }
 
 int Solver::FindFreeMachine(int* MachineTimes, int MachineAmount)
@@ -197,23 +163,39 @@ int Solver::FindFreeMachine(int* MachineTimes, int MachineAmount)
     }
 }
 
-void Solver::sortJobs(QList<Job *> *JobsToSort, int (Solver::* comparator)(Job *, Job *))
+void Solver::sortJobs(QList<Job *> *JobsToSort, int MachineToCompare, int (Solver::* comparator)(Job *, Job *, int))
 {
     int n = JobsToSort->size();
     do
     {
         for(int i=0; i < n-1; ++i)
         {
-            if( (this->*comparator)( (*JobsToSort)[i], (*JobsToSort)[i+1]) == 1)
+            if( (this->*comparator)( (*JobsToSort)[i], (*JobsToSort)[i+1], MachineToCompare) == 1)
                     JobsToSort->swap(i,i+1);
         }
         --n;
     }while(n > 1);
 }
 
-int Solver::AscendingBasedOnProcessingTime(Job* A, Job* B)
+int Solver::AscendingBasedOnProcessingTime(Job* A, Job* B, int MachineToCompare)
 {
-    if( A->getTimeFromMachinePlotting(1) < B->getTimeFromMachinePlotting(1) )
+    if( A->getTimeFromMachinePlotting(MachineToCompare) > B->getTimeFromMachinePlotting(MachineToCompare) )
+        return 1;
+    else
+        return 0;
+}
+
+int Solver::DescendingBasedOnProcessingTime(Job *A, Job *B, int MachineToCompare)
+{
+    if( A->getTimeFromMachinePlotting(MachineToCompare) < B->getTimeFromMachinePlotting(MachineToCompare) )
+        return 1;
+    else
+        return 0;
+}
+
+int Solver::AscendingBasedOnRelase(Job* A, Job* B, int def = 0)
+{
+    if( A->getRelaseTime() > B->getRelaseTime())
         return 1;
     else
         return 0;
