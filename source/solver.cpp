@@ -202,7 +202,7 @@ void Solver::sortJobs(QList<Job *> *JobsToSort, int (Solver::* comparator)(Job *
     int n = JobsToSort->size();
     do
     {
-        for(int i=0; i > n-1; ++i)
+        for(int i=0; i < n-1; ++i)
         {
             if( (this->*comparator)( (*JobsToSort)[i], (*JobsToSort)[i+1]) == 1)
                     JobsToSort->swap(i,i+1);
