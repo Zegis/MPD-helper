@@ -6,8 +6,8 @@ Simple app to sequence jobs on processors via sequencing algorithms, done with C
 ###What's done?
 - Simplest of all alghoritms - [Johnson's algorithm for sequencing](http://dev.kofun.pl/algorithms/johnsons-sequencing-algorithm/).
 - Simple Qt UI with plotting the result.
-- Longest Processing Time Algorithm,
-- Reverse Processing Time Algorithm,
+- [Longest Processing Time Algorithm](http://dev.kofun.pl/algorithms/longest-and-reverse-processing-time-algorithms/),
+- [Reverse Processing Time Algorithm](http://dev.kofun.pl/algorithms/longest-and-reverse-processing-time-algorithms/),
 
 ###To do:
 - Hu Algorithm
