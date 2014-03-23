@@ -181,14 +181,19 @@ void MainWindow::on_MachinesSpinBox_valueChanged(int arg1)
     {
         ui->tableWidget->setRowCount(arg1);
         ui->tableWidget->repaint();
-        QString tmp;
-        QTextStream str(&tmp);
-        for(int i=0; i< arg1; ++i)
-        {
-            str << "P[" << i+1 << "];";
-        }
-        ui->tableWidget->setVerticalHeaderLabels(tmp.split(";"));
+        PrepareTableWidgetLabels(arg1);
     }
+}
+
+void MainWindow::PrepareTableWidgetLabels(int LabelsAmount)
+{
+    QString tmp;
+    QTextStream str(&tmp);
+    for(int i=0; i< LabelsAmount; ++i)
+    {
+        str << "P[" << i+1 << "];";
+    }
+    ui->tableWidget->setVerticalHeaderLabels(tmp.split(";"));
 }
 
 void MainWindow::on_actionZapisz_triggered()
@@ -269,12 +274,24 @@ void MainWindow::on_AlgorithmBox_currentIndexChanged(int index)
 {
     chosenAlgorithm = index;
 
-    if(chosenAlgorithm == 0)
-        ui->MachinesSpinBox->setValue(2);
-    else if(chosenAlgorithm == 1)
+    if(chosenAlgorithm == 1)
     {
+        ui->tableWidget->setRowCount(2);
         QStringList newLabels = (QStringList() << "P" << "R");
         ui->tableWidget->setVerticalHeaderLabels(newLabels);
     }
+    else if(chosenAlgorithm != 0)
+    {
+        ui->tableWidget->setRowCount(1);
+        PrepareTableWidgetLabels(1);
+    }
+    else
+    {
+        int rowsAmount = ui->MachinesSpinBox->value();
+        ui->tableWidget->setRowCount(rowsAmount);
+        PrepareTableWidgetLabels(rowsAmount);
+    }
+
+    ui->tableWidget->repaint();
 
 }

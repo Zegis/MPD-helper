@@ -55,6 +55,8 @@ private:
     void PrepareJobsForParallel(int jobCount);
     void ShowResults();
     void ShowError();
+
+    void PrepareTableWidgetLabels(int LabelsAmount);
 };
 
 #endif // MAINWINDOW_H
