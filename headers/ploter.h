@@ -24,7 +24,7 @@ private:
     const int lineStartingX;
 
 
-    QColor colorTab[10];
+    QColor colorTab[11];
 
     int lineStartingY[3];
 

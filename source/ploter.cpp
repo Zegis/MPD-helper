@@ -3,15 +3,17 @@
 Ploter::Ploter(): scale(20), labelOffset(24,4), jobHeight(19), lineStartingX(20)
 {
     colorTab[0].setNamedColor("cyan");
-    colorTab[1].setNamedColor("olive");
-    colorTab[2].setNamedColor("chartreuse");
-    colorTab[3].setNamedColor("chocolate");
-    colorTab[4].setNamedColor("coral");
-    colorTab[5].setNamedColor("crimson");
-    colorTab[6].setNamedColor("olive");
-    colorTab[7].setNamedColor("gold");
-    colorTab[7].setNamedColor("fuchsia");
-    colorTab[9].setNamedColor("tan");
+    colorTab[1].setNamedColor("cyan");
+    colorTab[2].setNamedColor("olive");
+    colorTab[3].setNamedColor("chartreuse");
+    colorTab[4].setNamedColor("chocolate");
+    colorTab[5].setNamedColor("coral");
+    colorTab[6].setNamedColor("crimson");
+    colorTab[7].setNamedColor("olive");
+    colorTab[8].setNamedColor("gold");
+    colorTab[9].setNamedColor("fuchsia");
+    colorTab[10].setNamedColor("tan");
+
 
     lineStartingY[0] = 20;
     lineStartingY[1] = 40;
@@ -50,7 +52,12 @@ QGraphicsScene* Ploter::drawSolutionPlot(Machine** machines, int MachineCount, i
     {
         for(int j=0; j < MachineCount; ++j)
         {
-            jobLabelContent.setNum(machines[j]->getJobId(i));
+            int jobId = machines[j]->getJobId(i);
+
+            pen.setColor(colorTab[jobId]);
+            brush.setColor(colorTab[jobId]);
+
+            jobLabelContent.setNum(jobId);
             jobLabelContent.insert(0,"Z");
 
             currentMashineJobWidth = machines[j]->getJobDuration(i);
@@ -66,9 +73,6 @@ QGraphicsScene* Ploter::drawSolutionPlot(Machine** machines, int MachineCount, i
 
             offsetForJob[j] += currentMashineJobWidth;
         }
-
-        pen.setColor(colorTab[i]);
-        brush.setColor(colorTab[i]);
     }
 
     PrepareAxis(offsetForJob[MachineCount-1], MachineCount);
@@ -109,13 +113,12 @@ QGraphicsScene* Ploter::drawParallelPlot(Machine **machines, int MachineCount, i
     int currentMashineJobWidth = 0;
 
     int LabelsCount = JobCount;
-    int colorIdx = 0;
 
     plot.clear();
     plot.setSceneRect(0,0,356,86);
 
-    QPen pen(colorTab[colorIdx]);
-    QBrush brush(colorTab[colorIdx]);
+    QPen pen(colorTab[0]);
+    QBrush brush(colorTab[0]);
 
     QString jobLabelContent;
     QGraphicsSimpleTextItem **TimeLabels = new QGraphicsSimpleTextItem*[LabelsCount];
@@ -135,7 +138,12 @@ QGraphicsScene* Ploter::drawParallelPlot(Machine **machines, int MachineCount, i
         offsetForJob = 0;
         for(int i=1; i <= machines[j]->getNumberOfJobs(); ++i)
         {
-            jobLabelContent.setNum(machines[j]->getJobId(i));
+            int jobId = machines[j]->getJobId(i);
+
+            pen.setColor(colorTab[jobId]);
+            brush.setColor(colorTab[jobId]);
+
+            jobLabelContent.setNum(jobId);
             jobLabelContent.insert(0,"Z");
 
             currentMashineJobWidth = machines[j]->getJobDuration(i);
@@ -147,10 +155,6 @@ QGraphicsScene* Ploter::drawParallelPlot(Machine **machines, int MachineCount, i
             plot.addItem(TimeLabels[labelIdxj++]);
 
             offsetForJob += currentMashineJobWidth;
-
-            if(colorIdx < 10) ++colorIdx;
-            pen.setColor(colorTab[colorIdx]);
-            brush.setColor(colorTab[colorIdx]);
         }
 
         if(maxTime < machines[j]->getEndingTimeForLastJob()) maxTime = machines[j]->getEndingTimeForLastJob();
