@@ -18,9 +18,7 @@ SOURCES += source/job.cpp \
     source/mainwindow.cpp \
     source/solver.cpp \
     source/ploter.cpp \
-    source/solution.cpp \
-    source/tree.cpp \
-    source/node.cpp
+    source/solution.cpp
 
 HEADERS  += headers/job.h \
     headers/mashine.h \
