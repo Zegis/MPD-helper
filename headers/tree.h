@@ -12,11 +12,12 @@ public:
 
     void insertJob(nodeType* jobToInsert, int ParentId);
 
+    node<nodeType>* searchForNode(int nodeId);
+
 private:
    node<nodeType>* root;
 
-    node<nodeType>* searchForNode(int nodeId);
-    void insertNodeJob(Job* jobToInsert, node<nodeType>* parentNode);
+
 
 };
 
