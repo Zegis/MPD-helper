@@ -8,6 +8,8 @@ private:
     int numberOfMachines;
     int * timesOnMachines;
 
+    int proceedingJobs[3];
+
     int r;
 
 public:
@@ -24,6 +26,10 @@ public:
 
     void setRelaseTime(int relase);
     int getRelaseTime();
+
+    bool proceeds(int id);
+
+    void addProceedingJob(int id);
 };
 
 #endif // JOB_H

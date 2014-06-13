@@ -9,6 +9,9 @@ Job::Job(int Id, int NumberOfMashines)
 
     for(int i=0; i<numberOfMachines; ++i)
         timesOnMachines[i] = 0;
+
+    for(int i=0; i<3; ++i)
+        proceedingJobs[i] = 0;
 }
 
 int Job::getId()
@@ -73,6 +76,22 @@ void Job::setRelaseTime(int relase)
 int Job::getRelaseTime()
 {
     return r;
+}
+
+bool Job::proceeds(int id)
+{
+    for(int i=0; i<3; ++i)
+        if(proceedingJobs[i] == id)
+            return true;
+
+    return false;
+}
+
+void Job::addProceedingJob(int id)
+{
+    for(int i=0; i<3; ++i)
+        if(proceedingJobs[i] == 0)
+            proceedingJobs[i] = id;
 }
 
 Job::~Job()
