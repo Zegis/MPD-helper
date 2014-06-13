@@ -3,13 +3,17 @@
 
 class Job;
 
+template<class dataType>
 class node{
 
+public:
+    node(dataType* dataToInsert);
+
 private:
-    Job *data;
+    dataType *data;
     node *left;
     node *middle;
     node *right;
-}
+};
 
 #endif // NODE_H

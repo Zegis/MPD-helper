@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->AlgorithmBox->addItem("FIFO");
     ui->AlgorithmBox->addItem("LPT");
     ui->AlgorithmBox->addItem("RPT");
+    ui->AlgorithmBox->addItem("Hu T.C.");
     ui->tableWidget->verticalHeader()->show();
 
     chosenAlgorithm = 0;
