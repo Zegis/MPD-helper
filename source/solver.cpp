@@ -200,3 +200,48 @@ int Solver::AscendingBasedOnRelase(Job* A, Job* B, int def = 0)
     else
         return 0;
 }
+
+Solution Solver::Hu(QList<Job *> jobs, int MachineAmount)
+{
+    QVector< QList<Job *> > orderedJobs;
+
+    Tree<int> inTree = createTree(jobs);
+
+    // Split jobs via LVLs
+    // Order jobs
+
+    return Solution(orderedJobs);
+}
+
+
+Tree<int> Solver::createTree(QList<Job*> jobs)
+{
+    Tree<int> ret;
+
+    int rootID = findRoot(jobs);
+
+    ret.insertRoot(&rootID);
+
+    // Add child nodes
+
+    return ret;
+}
+
+int Solver::findRoot(QList<Job*> jobs)
+{
+    int rootId = 0;
+
+    while(jobs.size() != 0)
+    {
+        rootId = jobs.takeFirst()->getId();
+        for(int i=1; i < jobs.length(); ++i)
+        {
+            if(jobs[i]->proceeds(rootId))
+                break;
+            else if(i == jobs.length()-1)
+                return rootId;
+        }
+    }
+
+    return 0;
+}

@@ -9,6 +9,7 @@ class Tree{
 
 public:
     Tree();
+
     void insertRoot(nodeType* jobToInsert);
 
     void insertJob(nodeType* jobToInsert, int ParentId);
@@ -17,9 +18,6 @@ public:
 
 private:
    node<nodeType>* root;
-
-
-
 };
 
 template<class nodeType> Tree<nodeType>::Tree()

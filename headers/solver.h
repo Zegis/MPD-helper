@@ -4,6 +4,7 @@
 #include "job.h"
 #include "dominance.h"
 #include "solution.h"
+#include "tree.h"
 #include <QList>
 #include <QVector>
 
@@ -15,6 +16,7 @@ public:
     Solution Fifo(QList<Job *> jobs);
     Solution LPT(QList<Job *> jobs, int MachineAmount);
     Solution RPT(QList<Job *> jobs, int MachineAmount);
+    Solution Hu(QList<Job *> jobs, int MachineAmount);
 
 private:
 
@@ -34,6 +36,10 @@ private:
     int AscendingBasedOnRelase(Job* A, Job* B, int def);
 
     void sortJobs(QList<Job*> *JobsToSort, int MachineToCompare, int (Solver::*)(Job *, Job *, int));
+
+    Tree<int> createTree(QList<Job*> jobs);
+
+    int findRoot(QList<Job*> jobs);
 
 };
 
