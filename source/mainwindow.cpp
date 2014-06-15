@@ -61,6 +61,11 @@ void MainWindow::on_orderButton_clicked()
         MachineCount = ui->MachinesSpinBox->value();
         solution = solv.RPT(A,MachineCount);
     }
+    else if(chosenAlgorithm == 4)
+    {
+        MachineCount = ui->MachinesSpinBox->value();
+        solution = solv.Hu(A,MachineCount);
+    }
 
 
     if(solution.isOptimal())
@@ -91,6 +96,8 @@ void MainWindow::PrepareJobsSet()
         PrepareJobsForJohnson(JobCount,MachineCount);
     else if(chosenAlgorithm == 1)
         PrepareJobsForFifo(JobCount);
+    else if(chosenAlgorithm == 4)
+        PrepareJobsForHu(JobCount);
     else
         PrepareJobsForParallel(JobCount);
 }
@@ -122,6 +129,24 @@ void MainWindow::PrepareJobsForFifo(int jobCount)
 
         A[i]->setTimeOnMachine(ui->tableWidget->item(0,i)->text().toInt(),1);
         A[i]->setRelaseTime(ui->tableWidget->item(1,i)->text().toInt());
+    }
+}
+
+void MainWindow::PrepareJobsForHu(int jobCount)
+{
+    int proceedingJob = 0;
+
+    for(int i=0; i<jobCount; ++i)
+    {
+        A.append(new Job(i+1,1));
+
+        for(int j=0; j<3; ++j)
+        {
+            proceedingJob = ui->tableWidget->item(j,i)->text().toInt();
+
+            if(proceedingJob != 0)
+                A[i]->addProceedingJob(proceedingJob);
+        }
     }
 }
 
@@ -275,22 +300,31 @@ void MainWindow::on_AlgorithmBox_currentIndexChanged(int index)
 {
     chosenAlgorithm = index;
 
-    if(chosenAlgorithm == 1)
+    int rowsAmount;
+
+    if(chosenAlgorithm == 0)
+    {
+        rowsAmount = ui->MachinesSpinBox->value();
+        ui->tableWidget->setRowCount(rowsAmount);
+        PrepareTableWidgetLabels(rowsAmount);
+    }
+    else if(chosenAlgorithm == 1)
     {
         ui->tableWidget->setRowCount(2);
         QStringList newLabels = (QStringList() << "P" << "R");
         ui->tableWidget->setVerticalHeaderLabels(newLabels);
     }
-    else if(chosenAlgorithm != 0)
+    else if(chosenAlgorithm == 4)
     {
-        ui->tableWidget->setRowCount(1);
-        PrepareTableWidgetLabels(1);
+        ui->tableWidget->setRowCount(3);
+        QStringList newLabels = (QStringList() << "Prec[1]" << "Prec[2]" << "Prec[3]");
+        ui->tableWidget->setVerticalHeaderLabels(newLabels);
     }
     else
     {
-        int rowsAmount = ui->MachinesSpinBox->value();
-        ui->tableWidget->setRowCount(rowsAmount);
-        PrepareTableWidgetLabels(rowsAmount);
+        rowsAmount = 1;
+        ui->tableWidget->setRowCount(1);
+        PrepareTableWidgetLabels(1);
     }
 
     ui->tableWidget->repaint();
