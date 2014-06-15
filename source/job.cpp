@@ -90,8 +90,13 @@ bool Job::proceeds(int id)
 void Job::addProceedingJob(int id)
 {
     for(int i=0; i<3; ++i)
+    {
         if(proceedingJobs[i] == 0)
+        {
             proceedingJobs[i] = id;
+            break;
+        }
+    }
 }
 
 Job::~Job()

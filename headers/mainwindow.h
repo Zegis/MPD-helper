@@ -53,6 +53,7 @@ private:
     void PrepareJobsForJohnson(int jobCount, int MachineCount);
     void PrepareJobsForFifo(int jobCount);
     void PrepareJobsForParallel(int jobCount);
+    void PrepareJobsForHu(int jobCount);
     void ShowResults();
     void ShowError();
 
