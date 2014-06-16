@@ -3,6 +3,7 @@
 
 #include "headers/node.h"
 #include <QList>
+#include <QVector>
 
 template<class nodeType>
 class Tree{
@@ -15,6 +16,8 @@ public:
     void insertJob(nodeType* jobToInsert, int ParentId);
 
     node<nodeType>* searchForNode(int nodeId);
+
+    QVector<QList <int> > getNodeLevels() ;
 
 private:
    node<nodeType>* root;
@@ -37,7 +40,6 @@ template<class nodeType> void Tree<nodeType>::insertRoot(nodeType *jobToInsert)
 template<class nodeType> void Tree<nodeType>::insertJob(nodeType *jobToInsert, int ParentId)
 {
     node<nodeType>* parent = searchForNode(ParentId);
-   // node<nodeType> newNode = node<nodeType>(jobToInsert);
 
     if(parent->left == 0x0)
     {
@@ -78,6 +80,45 @@ template<class nodeType> node<nodeType>* Tree<nodeType>::searchForNode(int nodeI
         }
     }
     return 0;
+}
+
+template<class nodeType> QVector< QList<int> > Tree<nodeType>::getNodeLevels()
+{
+    QVector< QList<int> > ret(1);
+
+    node<nodeType>* levelDelimiterNode;
+    node<nodeType>* currentNode;
+    QList <node<nodeType>* > nodesToVisit;
+
+
+    levelDelimiterNode = root->left;
+    nodesToVisit.append(root);
+
+    //int currentLevel = 0;
+    while(nodesToVisit.size() != 0)
+    {
+        currentNode = nodesToVisit.takeFirst();
+
+        if(currentNode->left != 0)
+            nodesToVisit.append(currentNode->left);
+        if(currentNode->middle != 0)
+            nodesToVisit.append(currentNode->middle);
+        if(currentNode->right != 0)
+            nodesToVisit.append(currentNode->right);
+
+        if(currentNode != levelDelimiterNode)
+        {
+            ret.last().append(*(currentNode->data));
+        }
+        else
+        {
+            ret.resize(ret.size()+1);
+            ret.last().append(*(currentNode->data));
+            levelDelimiterNode = currentNode->left;
+        }
+    }
+
+    return ret;
 }
 
 #endif // TREE_H

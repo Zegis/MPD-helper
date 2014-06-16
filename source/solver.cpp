@@ -207,6 +207,8 @@ Solution Solver::Hu(QList<Job *> jobs, int MachineAmount)
 
     Tree<int> inTree = createTree(jobs);
 
+    QVector< QList<int> > leveledJobs = inTree.getNodeLevels();
+
     // Split jobs via LVLs
     // Order jobs
 
@@ -219,21 +221,9 @@ Tree<int> Solver::createTree(QList<Job*> jobs)
     Tree<int> ret;
 
     int rootID = findRoot(jobs);
-//    int offsetForList = -1;
-
 
     ret.insertRoot(&rootID);
-
     addNode(&ret, jobs, rootID);
-
-//    int* proceedingJobs = jobs[rootID+offsetForList]->getProceedingJobs();
-//    for(int i=0; i<3; ++i)
-//    {
-//        if(proceedingJobs[i] != 0)
-//            ret.insertJob(&(proceedingJobs[i]),rootID);
-//    }
-
-    // Add child nodes
 
     return ret;
 }
