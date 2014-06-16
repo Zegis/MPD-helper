@@ -103,3 +103,8 @@ Job::~Job()
 {
     delete [] timesOnMachines;
 }
+
+int* Job::getProceedingJobs()
+{
+    return proceedingJobs;
+}

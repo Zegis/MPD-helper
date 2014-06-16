@@ -30,6 +30,8 @@ public:
     bool proceeds(int id);
 
     void addProceedingJob(int id);
+
+    int* getProceedingJobs();
 };
 
 #endif // JOB_H

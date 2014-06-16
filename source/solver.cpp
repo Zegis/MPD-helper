@@ -219,8 +219,19 @@ Tree<int> Solver::createTree(QList<Job*> jobs)
     Tree<int> ret;
 
     int rootID = findRoot(jobs);
+//    int offsetForList = -1;
+
 
     ret.insertRoot(&rootID);
+
+    addNode(&ret, jobs, rootID);
+
+//    int* proceedingJobs = jobs[rootID+offsetForList]->getProceedingJobs();
+//    for(int i=0; i<3; ++i)
+//    {
+//        if(proceedingJobs[i] != 0)
+//            ret.insertJob(&(proceedingJobs[i]),rootID);
+//    }
 
     // Add child nodes
 
@@ -230,18 +241,34 @@ Tree<int> Solver::createTree(QList<Job*> jobs)
 int Solver::findRoot(QList<Job*> jobs)
 {
     int rootId = 0;
+    bool found = false;
 
-    while(jobs.size() != 0)
+    while(jobs.size() != 0 && !found)
     {
         rootId = jobs.takeFirst()->getId();
-        for(int i=1; i < jobs.length(); ++i)
+        for(int i=0; i < jobs.length(); ++i)
         {
             if(jobs[i]->proceeds(rootId))
                 break;
             else if(i == jobs.length()-1)
-                return rootId;
+                found = true;
         }
     }
 
-    return 0;
+    return rootId;
+}
+
+void Solver::addNode(Tree<int>* workingTree, QList<Job*> jobs, int jobID)
+{
+    int offsetForList = -1;
+
+    int* proceedingJobs = jobs[jobID+offsetForList]->getProceedingJobs();
+    for(int i=0; i<3; ++i)
+    {
+        if(proceedingJobs[i] != 0)
+        {
+            workingTree->insertJob(&(proceedingJobs[i]),jobID);
+            addNode(workingTree, jobs, proceedingJobs[i]);
+        }
+    }
 }

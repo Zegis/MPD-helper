@@ -41,6 +41,8 @@ private:
 
     int findRoot(QList<Job*> jobs);
 
+    void addNode(Tree<int>* workingTree, QList<Job*> jobs, int jobID);
+
 };
 
 #endif // SOLVER_H
