@@ -136,6 +136,18 @@ template<class nodeType> QVector< QList<int> > Tree<nodeType>::getNodeLevels()
             ret.last().append(*(currentNode->data));
             levelDelimiterNode = currentNode->left;
         }
+
+        if(levelDelimiterNode == 0)
+        {
+            if(currentNode->left != 0)
+                levelDelimiterNode = currentNode->left;
+            else if(currentNode->middle != 0)
+                levelDelimiterNode = currentNode->middle;
+            else if(currentNode->right != 0)
+                levelDelimiterNode = currentNode->right;
+            else
+                levelDelimiterNode = 0;
+        }
     }
 
     return ret;
