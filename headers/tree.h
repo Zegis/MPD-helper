@@ -53,7 +53,7 @@ template<class nodeType> void Tree<nodeType>::insertRoot(nodeType *jobToInsert)
     if(root)
         return;
     else{
-        root = new node<nodeType>(jobToInsert);
+        root = new node<nodeType>(*jobToInsert);
     }
 }
 
@@ -63,16 +63,16 @@ template<class nodeType> void Tree<nodeType>::insertJob(nodeType *jobToInsert, i
 
     if(parent->left == 0x0)
     {
-        parent->left = new node<nodeType>(jobToInsert);
+        parent->left = new node<nodeType>(*jobToInsert);
         return;
     }
     else if(parent->middle == 0)
     {
-        parent->middle = new node<nodeType>(jobToInsert);
+        parent->middle = new node<nodeType>(*jobToInsert);
         return;
     }
     else if(parent->right == 0)
-        parent->right = new node<nodeType>(jobToInsert);
+        parent->right = new node<nodeType>(*jobToInsert);
 }
 
 template<class nodeType> node<nodeType>* Tree<nodeType>::searchForNode(int nodeId)
@@ -106,9 +106,9 @@ template<class nodeType> QVector< QList<int> > Tree<nodeType>::getNodeLevels()
 {
     QVector< QList<int> > ret(1);
 
-    node<nodeType>* levelDelimiterNode;
-    node<nodeType>* currentNode;
-    QList <node<nodeType>* > nodesToVisit;
+    node<nodeType>* levelDelimiterNode = 0;
+    node<nodeType>* currentNode = 0;
+    QList <node<nodeType> * > nodesToVisit;
 
 
     levelDelimiterNode = root->left;
