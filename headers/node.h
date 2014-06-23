@@ -6,6 +6,7 @@ class node{
 
 public:
     node(dataType* dataToInsert);
+    ~node();
 
     dataType *data;
     node *left;
@@ -19,6 +20,11 @@ template<class dataType> node<dataType>::node(dataType *dataToInsert){
     right = 0;
     left = 0;
     middle = 0;
+}
+
+template<class dataType> node<dataType>::~node()
+{
+    delete data;
 }
 
 #endif // NODE_H

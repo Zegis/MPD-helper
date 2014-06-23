@@ -10,6 +10,7 @@ class Tree{
 
 public:
     Tree();
+    ~Tree();
 
     void insertRoot(nodeType* jobToInsert);
 
@@ -21,11 +22,30 @@ public:
 
 private:
    node<nodeType>* root;
+   void delete_Tree(node<nodeType>* leaf);
 };
 
 template<class nodeType> Tree<nodeType>::Tree()
 {
     root = 0;
+}
+
+template<class nodeType> Tree<nodeType>::~Tree()
+{
+    if(root != 0)
+        delete_Tree(root);
+}
+
+template<class nodeType> void Tree<nodeType>::delete_Tree(node<nodeType> *leaf)
+{
+    if(leaf != 0)
+    {
+        delete_Tree(leaf->left);
+        delete_Tree(leaf->middle);
+        delete_Tree(leaf->right);
+
+        delete leaf;
+    }
 }
 
 template<class nodeType> void Tree<nodeType>::insertRoot(nodeType *jobToInsert)
