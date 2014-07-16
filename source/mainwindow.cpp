@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QTextStream>
 #include <QMessageBox>
-
+#include <cstdio>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -263,10 +263,12 @@ void MainWindow::on_actionOtworz_triggered()
     QString fileName =  QFileDialog::getOpenFileName(this, tr("Otwieranie"), "", tr("Normal text file (*.txt)"));
 
     QFile file(fileName);
-    QTextStream fileData(&file);
+
 
     if(file.open(QIODevice::ReadOnly))
     {
+        QTextStream fileData(&file);
+
         int Jobs, Machines;
         QString ValueToInsert;
         fileData >> Jobs;

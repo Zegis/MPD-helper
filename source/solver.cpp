@@ -203,14 +203,31 @@ int Solver::AscendingBasedOnRelase(Job* A, Job* B, int def = 0)
 
 Solution Solver::Hu(QList<Job *> jobs, int MachineAmount)
 {
-    QVector< QList<Job *> > orderedJobs;
+    QVector< QList<Job *> > orderedJobs(MachineAmount);
 
     Tree<int> inTree = createTree(jobs);
 
     QVector< QList<int> > leveledJobs = inTree.getNodeLevels();
+    QVector< QList<int> >::Iterator elementRemover;
 
-    // Split jobs via LVLs
-    // Order jobs
+    while(leveledJobs.size() != 0)
+    {
+        int MachineToFill = 0;
+        while(leveledJobs.last().size() != 0)
+        {
+
+            // Get job from tree
+            // Add to machine
+            leveledJobs.last().takeFirst();
+
+            ++MachineToFill;
+        }
+
+        elementRemover = leveledJobs.end();
+        --elementRemover;
+
+        leveledJobs.erase(elementRemover);
+    }
 
     return Solution(orderedJobs);
 }
