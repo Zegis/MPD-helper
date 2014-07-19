@@ -43,6 +43,8 @@ private:
 
     void addNode(Tree<int>* workingTree, QList<Job*> jobs, int jobID);
 
+    Job* getJobWithID(QList<Job*> jobs, int jobID);
+
 };
 
 #endif // SOLVER_H

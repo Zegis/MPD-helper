@@ -210,17 +210,22 @@ Solution Solver::Hu(QList<Job *> jobs, int MachineAmount)
     QVector< QList<int> > leveledJobs = inTree.getNodeLevels();
     QVector< QList<int> >::Iterator elementRemover;
 
+    int jobID;
     while(leveledJobs.size() != 0)
     {
-        int MachineToFill = 0;
+        int counter = 0;
+        int MachineToFill;
         while(leveledJobs.last().size() != 0)
         {
 
             // Get job from tree
             // Add to machine
-            leveledJobs.last().takeFirst();
+            jobID = leveledJobs.last().takeFirst();
+            MachineToFill = counter % MachineAmount;
 
-            ++MachineToFill;
+            orderedJobs[MachineToFill].append(getJobWithID(jobs, jobID));
+
+            ++counter;
         }
 
         elementRemover = leveledJobs.end();
@@ -279,3 +284,12 @@ void Solver::addNode(Tree<int>* workingTree, QList<Job*> jobs, int jobID)
         }
     }
 }
+
+ Job* Solver::getJobWithID(QList<Job*> jobs, int jobID)
+ {
+     for(int i=0; i < jobs.size(); ++i)
+     {
+         if(jobs.at(i)->getId() == jobID)
+             return jobs.takeAt(i);
+     }
+ }
