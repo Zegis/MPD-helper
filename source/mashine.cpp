@@ -80,5 +80,5 @@ void Machine::clear()
 int Machine::getJobId(int jobNumber)
 {
     if(jobNumber != 0) --jobNumber;
-    return jobs[jobNumber]->getId();
+    return (jobNumber >= jobs.count()) ? 0 : jobs[jobNumber]->getId();
 }
