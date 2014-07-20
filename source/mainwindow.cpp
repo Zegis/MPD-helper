@@ -139,6 +139,7 @@ void MainWindow::PrepareJobsForHu(int jobCount)
     for(int i=0; i<jobCount; ++i)
     {
         A.append(new Job(i+1,1));
+        A[i]->setTimeOnMachine(1,1);
 
         for(int j=0; j<3; ++j)
         {
@@ -167,7 +168,7 @@ void MainWindow::ShowResults()
     int JobCount = ui->JobsSpinBox->value();
     int MachineCount = (chosenAlgorithm != 1) ? ui->MachinesSpinBox->value() : 1;
 
-    if(chosenAlgorithm != 2 && chosenAlgorithm != 3)
+    if(chosenAlgorithm != 2 && chosenAlgorithm != 3 && chosenAlgorithm != 4)
         ui->graphicsView->setScene(plot.drawSolutionPlot(machines,MachineCount, JobCount));
     else
         ui->graphicsView->setScene(plot.drawParallelPlot(machines,MachineCount, JobCount));
