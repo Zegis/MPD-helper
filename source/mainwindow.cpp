@@ -182,7 +182,7 @@ void MainWindow::ShowResults()
     else if(solution.getJobSetDominance() == ThirdOverSecond)
         result = "M2 zdominowana przez M3";
 
-    if(MachineCount == 3)
+    if(chosenAlgorithm == 1 && MachineCount == 3)
         ui->DominanceLabel->setText(result);
     else
         ui->DominanceLabel->setText("");
