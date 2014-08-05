@@ -138,23 +138,43 @@ QGraphicsScene* Ploter::drawParallelPlot(Machine **machines, int MachineCount, i
         offsetForJob = 0;
         for(int i=1; i <= machines[j]->getNumberOfJobs(); ++i)
         {
-            int jobId = machines[j]->getJobId(i);
+            {
+                int jobId = machines[j]->getJobId(i);
 
-            pen.setColor(colorTab[jobId]);
-            brush.setColor(colorTab[jobId]);
+                if(jobId != -1)
+                {
 
-            jobLabelContent.setNum(jobId);
-            jobLabelContent.insert(0,"Z");
+                pen.setColor(colorTab[jobId]);
+                brush.setColor(colorTab[jobId]);
 
-            currentMashineJobWidth = machines[j]->getJobDuration(i);
+                jobLabelContent.setNum(jobId);
+                jobLabelContent.insert(0,"Z");
 
-            TimeLabels[labelIdxj]->setText(jobLabelContent);
-            TimeLabels[labelIdxj]->setPos(labelOffset.x() + offsetForJob * scale, lineStartingY[j] + labelOffset.y());
+                TimeLabels[labelIdxj]->setText(jobLabelContent);
+                TimeLabels[labelIdxj]->setPos(labelOffset.x() + offsetForJob * scale, lineStartingY[j] + labelOffset.y());
 
-            plot.addRect(lineStartingX + offsetForJob * scale, lineStartingY[j], currentMashineJobWidth * scale, jobHeight , pen, brush);
-            plot.addItem(TimeLabels[labelIdxj++]);
+                }
+                else
+                {
+                    pen.setColor(Qt::white);
+                    brush.setColor(Qt::white);
+                }
 
-            offsetForJob += currentMashineJobWidth;
+
+                currentMashineJobWidth = machines[j]->getJobDuration(i);
+                plot.addRect(lineStartingX + offsetForJob * scale,
+                             lineStartingY[j],
+                             currentMashineJobWidth * scale,
+                             jobHeight ,
+                             pen,
+                             brush);
+
+                if(jobId != -1)
+                    plot.addItem(TimeLabels[labelIdxj++]);
+
+
+                offsetForJob += currentMashineJobWidth;
+            }
         }
 
         if(maxTime < machines[j]->getEndingTimeForLastJob()) maxTime = machines[j]->getEndingTimeForLastJob();

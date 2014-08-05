@@ -211,19 +211,37 @@ Solution Solver::Hu(QList<Job *> jobs, int MachineAmount)
     QVector< QList<int> >::Iterator elementRemover;
 
     int jobID;
+    int counter = 0;
     while(leveledJobs.size() != 0)
     {
-        int counter = 0;
+
         int MachineToFill;
         while(leveledJobs.last().size() != 0)
         {
 
-            // Get job from tree
-            // Add to machine
-            jobID = leveledJobs.last().takeFirst();
+            Job* jobToAdd = 0;
             MachineToFill = counter % MachineAmount;
 
-            orderedJobs[MachineToFill].append(getJobWithID(jobs, jobID));
+            // Check proceedings
+            // If there's no proceeding job at this time add like this:
+            for(int i=0; i < leveledJobs.last().size(); ++i)
+            {
+                jobToAdd = getJobWithID(jobs, (leveledJobs.last())[i]);
+                if(isValid(jobToAdd, orderedJobs, MachineToFill))
+                {
+                    leveledJobs.last().takeAt(i);
+                    break;
+                }
+                else
+                {
+                    jobToAdd = 0;
+                }
+            }
+
+            if( jobToAdd == 0)
+                jobToAdd = createEmptyJob();
+
+            orderedJobs[MachineToFill].append(jobToAdd);
 
             ++counter;
         }
@@ -285,7 +303,7 @@ void Solver::addNode(Tree<int>* workingTree, QList<Job*> jobs, int jobID)
     }
 }
 
- Job* Solver::getJobWithID(QList<Job*> jobs, int jobID)
+Job* Solver::getJobWithID(QList<Job*> jobs, int jobID)
  {
      for(int i=0; i < jobs.size(); ++i)
      {
@@ -293,3 +311,27 @@ void Solver::addNode(Tree<int>* workingTree, QList<Job*> jobs, int jobID)
              return jobs.takeAt(i);
      }
  }
+
+Job* Solver::createEmptyJob()
+{
+    Job* ret = new Job(-1,1);
+    ret->setTimeOnMachine(1,1);
+
+    return ret;
+}
+
+bool Solver::isValid(Job* JobToCheck, QVector<QList<Job *> > order, int machineNumber)
+{
+    // Check if order contains JobToCeck's proceeding jobs in this time
+    // use JobToCheck->proceeds(int id)
+
+    if(machineNumber == 0)
+        return true;
+
+    for(int i=0; i < machineNumber; ++i)
+        if (JobToCheck->proceeds(order[i].last()->getId()))
+            return false;
+
+
+    return true;
+}
