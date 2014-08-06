@@ -2,7 +2,7 @@
 
 Ploter::Ploter(): scale(20), labelOffset(24,4), jobHeight(19), lineStartingX(20)
 {
-    colorTab[0].setNamedColor("cyan");
+    colorTab[0].setNamedColor("white");
     colorTab[1].setNamedColor("cyan");
     colorTab[2].setNamedColor("olive");
     colorTab[3].setNamedColor("chartreuse");
@@ -141,23 +141,17 @@ QGraphicsScene* Ploter::drawParallelPlot(Machine **machines, int MachineCount, i
             {
                 int jobId = machines[j]->getJobId(i);
 
-                if(jobId != -1)
-                {
-
                 pen.setColor(colorTab[jobId]);
                 brush.setColor(colorTab[jobId]);
 
                 jobLabelContent.setNum(jobId);
                 jobLabelContent.insert(0,"Z");
 
-                TimeLabels[labelIdxj]->setText(jobLabelContent);
-                TimeLabels[labelIdxj]->setPos(labelOffset.x() + offsetForJob * scale, lineStartingY[j] + labelOffset.y());
-
-                }
-                else
+                if(jobId != 0)
                 {
-                    pen.setColor(Qt::white);
-                    brush.setColor(Qt::white);
+                    TimeLabels[labelIdxj]->setText(jobLabelContent);
+                    TimeLabels[labelIdxj]->setPos(labelOffset.x() + offsetForJob * scale, lineStartingY[j] +
+                                                  labelOffset.y());
                 }
 
 
@@ -169,7 +163,7 @@ QGraphicsScene* Ploter::drawParallelPlot(Machine **machines, int MachineCount, i
                              pen,
                              brush);
 
-                if(jobId != -1)
+                if(jobId != 0 && currentMashineJobWidth != 0)
                     plot.addItem(TimeLabels[labelIdxj++]);
 
 

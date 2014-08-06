@@ -314,7 +314,7 @@ Job* Solver::getJobWithID(QList<Job*> jobs, int jobID)
 
 Job* Solver::createEmptyJob()
 {
-    Job* ret = new Job(-1,1);
+    Job* ret = new Job(0,1);
     ret->setTimeOnMachine(1,1);
 
     return ret;
