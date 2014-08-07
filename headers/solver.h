@@ -45,8 +45,6 @@ private:
 
     Job* getJobWithID(QList<Job*> jobs, int jobID);
 
-    Job* createEmptyJob();
-
     bool isValid(Job *JobToCheck , QVector< QList<Job *> > order, int machineNumber);
 
 };

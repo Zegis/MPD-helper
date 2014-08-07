@@ -108,3 +108,12 @@ int* Job::getProceedingJobs()
 {
     return proceedingJobs;
 }
+
+Job* Job::createEmptyJob()
+{
+    Job* ret = new Job(0,1);
+
+    ret->setTimeOnMachine(1,1);
+
+    return ret;
+}

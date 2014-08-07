@@ -239,7 +239,7 @@ Solution Solver::Hu(QList<Job *> jobs, int MachineAmount)
             }
 
             if( jobToAdd == 0)
-                jobToAdd = createEmptyJob();
+                jobToAdd = Job::createEmptyJob();
 
             orderedJobs[MachineToFill].append(jobToAdd);
 
@@ -311,14 +311,6 @@ Job* Solver::getJobWithID(QList<Job*> jobs, int jobID)
              return jobs.takeAt(i);
      }
  }
-
-Job* Solver::createEmptyJob()
-{
-    Job* ret = new Job(0,1);
-    ret->setTimeOnMachine(1,1);
-
-    return ret;
-}
 
 bool Solver::isValid(Job* JobToCheck, QVector<QList<Job *> > order, int machineNumber)
 {

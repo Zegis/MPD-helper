@@ -14,6 +14,9 @@ private:
 
 public:
     Job(int Id, int NumberOfMachines);
+
+    static Job* createEmptyJob();
+
     ~Job();
     int getId();
 

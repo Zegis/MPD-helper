@@ -150,8 +150,8 @@ QGraphicsScene* Ploter::drawParallelPlot(Machine **machines, int MachineCount, i
                 if(jobId != 0)
                 {
                     TimeLabels[labelIdxj]->setText(jobLabelContent);
-                    TimeLabels[labelIdxj]->setPos(labelOffset.x() + offsetForJob * scale, lineStartingY[j] +
-                                                  labelOffset.y());
+                    TimeLabels[labelIdxj]->setPos(labelOffset.x() + offsetForJob * scale,
+                                                  lineStartingY[j] + labelOffset.y());
                 }
 
 
