@@ -278,7 +278,7 @@ int Solver::findRoot(QList<Job*> jobs)
         rootId = jobs.takeFirst()->getId();
         for(int i=0; i < jobs.length(); ++i)
         {
-            if(jobs[i]->proceeds(rootId))
+            if(jobs[i]->preludes(rootId))
                 break;
             else if(i == jobs.length()-1)
                 found = true;
@@ -321,7 +321,7 @@ bool Solver::isValid(Job* JobToCheck, QVector<QList<Job *> > order, int machineN
         return true;
 
     for(int i=0; i < machineNumber; ++i)
-        if (JobToCheck->proceeds(order[i].last()->getId()))
+        if (JobToCheck->preludes(order[i].last()->getId()))
             return false;
 
 

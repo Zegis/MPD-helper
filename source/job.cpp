@@ -78,7 +78,7 @@ int Job::getRelaseTime()
     return r;
 }
 
-bool Job::proceeds(int id)
+bool Job::preludes(int id)
 {
     for(int i=0; i<3; ++i)
         if(proceedingJobs[i] == id)

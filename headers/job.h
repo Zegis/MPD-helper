@@ -30,7 +30,7 @@ public:
     void setRelaseTime(int relase);
     int getRelaseTime();
 
-    bool proceeds(int id);
+    bool preludes(int id);
 
     void addProceedingJob(int id);
 
