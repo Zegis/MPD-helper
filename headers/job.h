@@ -8,7 +8,7 @@ private:
     int numberOfMachines;
     int * timesOnMachines;
 
-    int proceedingJobs[3];
+    int preludingJobs[3];
 
     int r;
 
@@ -34,7 +34,7 @@ public:
 
     void addProceedingJob(int id);
 
-    int* getProceedingJobs();
+    int* getPreludingJobs();
 };
 
 #endif // JOB_H

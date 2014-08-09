@@ -210,7 +210,6 @@ Solution Solver::Hu(QList<Job *> jobs, int MachineAmount)
     QVector< QList<int> > leveledJobs = inTree.getNodeLevels();
     QVector< QList<int> >::Iterator elementRemover;
 
-    int jobID;
     int counter = 0;
     while(leveledJobs.size() != 0)
     {
@@ -222,8 +221,8 @@ Solution Solver::Hu(QList<Job *> jobs, int MachineAmount)
             Job* jobToAdd = 0;
             MachineToFill = counter % MachineAmount;
 
-            // Check proceedings
-            // If there's no proceeding job at this time add like this:
+            // Check preludings
+            // If there's no preluding job at this time add like this:
             for(int i=0; i < leveledJobs.last().size(); ++i)
             {
                 jobToAdd = getJobWithID(jobs, (leveledJobs.last())[i]);
@@ -292,13 +291,13 @@ void Solver::addNode(Tree<int>* workingTree, QList<Job*> jobs, int jobID)
 {
     int offsetForList = -1;
 
-    int* proceedingJobs = jobs[jobID+offsetForList]->getProceedingJobs();
+    int* preludingJobs = jobs[jobID+offsetForList]->getPreludingJobs();
     for(int i=0; i<3; ++i)
     {
-        if(proceedingJobs[i] != 0)
+        if(preludingJobs[i] != 0)
         {
-            workingTree->insertJob(&(proceedingJobs[i]),jobID);
-            addNode(workingTree, jobs, proceedingJobs[i]);
+            workingTree->insertJob(&(preludingJobs[i]),jobID);
+            addNode(workingTree, jobs, preludingJobs[i]);
         }
     }
 }
@@ -310,6 +309,8 @@ Job* Solver::getJobWithID(QList<Job*> jobs, int jobID)
          if(jobs.at(i)->getId() == jobID)
              return jobs.takeAt(i);
      }
+
+     return Job::createEmptyJob();
  }
 
 bool Solver::isValid(Job* JobToCheck, QVector<QList<Job *> > order, int machineNumber)

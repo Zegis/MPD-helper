@@ -11,7 +11,7 @@ Job::Job(int Id, int NumberOfMashines)
         timesOnMachines[i] = 0;
 
     for(int i=0; i<3; ++i)
-        proceedingJobs[i] = 0;
+        preludingJobs[i] = 0;
 }
 
 int Job::getId()
@@ -81,7 +81,7 @@ int Job::getRelaseTime()
 bool Job::preludes(int id)
 {
     for(int i=0; i<3; ++i)
-        if(proceedingJobs[i] == id)
+        if(preludingJobs[i] == id)
             return true;
 
     return false;
@@ -91,9 +91,9 @@ void Job::addProceedingJob(int id)
 {
     for(int i=0; i<3; ++i)
     {
-        if(proceedingJobs[i] == 0)
+        if(preludingJobs[i] == 0)
         {
-            proceedingJobs[i] = id;
+            preludingJobs[i] = id;
             break;
         }
     }
@@ -104,9 +104,9 @@ Job::~Job()
     delete [] timesOnMachines;
 }
 
-int* Job::getProceedingJobs()
+int* Job::getPreludingJobs()
 {
-    return proceedingJobs;
+    return preludingJobs;
 }
 
 Job* Job::createEmptyJob()
