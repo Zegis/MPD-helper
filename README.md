@@ -8,10 +8,7 @@ Simple app to sequence jobs on processors via sequencing algorithms, done with C
 - Simple Qt UI with plotting the result.
 - [Longest Processing Time Algorithm](http://dev.kofun.pl/algorithms/longest-and-reverse-processing-time-algorithms/),
 - [Reverse Processing Time Algorithm](http://dev.kofun.pl/algorithms/longest-and-reverse-processing-time-algorithms/),
-
-###To do:
-- Hu Algorithm
-- Liu Algorithm
+- [Hu T.C. Algorithm](http://dev.kofun.pl/algorithms/hu-t-c-algorithm/)
 
 ### Author
 [Zegis](http://dev.kofun.pl/)
