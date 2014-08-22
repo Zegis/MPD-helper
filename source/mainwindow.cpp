@@ -233,14 +233,15 @@ void MainWindow::on_actionZapisz_triggered()
 
     int JobsCount = ui->JobsSpinBox->value();
     int MachinesCount = ui->MachinesSpinBox->value();
+    int ChosenAlgorithm = ui->AlgorithmBox->currentIndex();
 
     if(file.open(QIODevice::WriteOnly))
     {
-        fileData << JobsCount << " "<< MachinesCount << "\n";
+        fileData << ChosenAlgorithm << " " << JobsCount << " "<< MachinesCount << "\n\r";
 
-        for(int i=0; i<JobsCount; ++i)
+        for(int i=0; i< ui->tableWidget->columnCount(); ++i)
         {
-            for(int j=0; j<MachinesCount; ++j)
+            for(int j=0; j< ui->tableWidget->rowCount(); ++j)
             {
                 if(ui->tableWidget->item(j,i) != NULL)
                     fileData << ui->tableWidget->item(j,i)->text() << " ";
@@ -270,15 +271,17 @@ void MainWindow::on_actionOtworz_triggered()
     {
         QTextStream fileData(&file);
 
-        int Jobs, Machines;
+        int Jobs, Machines, chosenAlgorithm;
         QString ValueToInsert;
+        fileData >> chosenAlgorithm;
+        ui->AlgorithmBox->setCurrentIndex(chosenAlgorithm);
         fileData >> Jobs;
         ui->JobsSpinBox->setValue(Jobs);
         fileData >> Machines;
         ui->MachinesSpinBox->setValue(Machines);
 
-        for(int i=0; i< Jobs; ++i)
-            for(int j=0; j < Machines; ++j)
+        for(int i=0; i< ui->tableWidget->columnCount(); ++i)
+            for(int j=0; j < ui->tableWidget->rowCount() ; ++j)
             {
                 fileData >> ValueToInsert;
                 if(ui->tableWidget->item(j,i) == NULL)
