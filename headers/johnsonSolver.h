@@ -2,6 +2,7 @@
 #define JOHNSONSOLVER_H
 
 #include "headers/solver.h"
+#include "dominance.h"
 
 class johnsonSolver: public Solver
 {

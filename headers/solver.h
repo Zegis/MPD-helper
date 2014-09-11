@@ -2,7 +2,6 @@
 #define SOLVER_H
 
 #include "job.h"
-#include "dominance.h"
 #include "solution.h"
 #include <QList>
 #include <QVector>
@@ -19,11 +18,6 @@ public:
 
 protected:
 
-
-    int FindFreeMachine(int* MachineTimes, int MachineAmount);
-
-    QVector< QList<Job*> > aproximateSequencing(QList<Job *> jobs, int MachineAmount);
-
     int AscendingBasedOnProcessingTime(Job *A, Job *B, int MachineToCompare);
 
     int DescendingBasedOnProcessingTime(Job* A, Job* B, int MachineToCompare);
@@ -32,7 +26,11 @@ protected:
 
     void sortJobs(QList<Job*> *JobsToSort, int MachineToCompare, int (Solver::*)(Job *, Job *, int));
 
+private:
 
+    int FindFreeMachine(int* MachineTimes, int MachineAmount);
+
+    QVector< QList<Job*> > aproximateSequencing(QList<Job *> jobs, int MachineAmount);
 
 };
 

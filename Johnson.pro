@@ -18,7 +18,10 @@ SOURCES += source/job.cpp \
     source/mainwindow.cpp \
     source/solver.cpp \
     source/ploter.cpp \
-    source/solution.cpp
+    source/solution.cpp \
+    source/johnsonSolver.cpp \
+    source/fifoSolver.cpp \
+    source/huSolver.cpp
 
 HEADERS  += headers/job.h \
     headers/mashine.h \
@@ -28,6 +31,9 @@ HEADERS  += headers/job.h \
     headers/ploter.h \
     headers/solution.h \
     headers/node.h \
-    headers/tree.h
+    headers/tree.h \
+    headers/johnsonSolver.h \
+    headers/fifoSolver.h \
+    headers/huSolver.h
 
 FORMS    += ui/mainwindow.ui
