@@ -8,7 +8,7 @@ Solution Solver::Solve(QList<Job*> jobs, int MachineAmount)
 {
     return Solution("Brak");
 }
-
+/*
 Solution Solver::Johnson(QList<Job*> jobs, int MachineAmount)
 {
     QList<Job*> B;
@@ -97,7 +97,7 @@ Solution Solver::Fifo(QList<Job *> jobs)
 
     return Solution(jobs);
 }
-
+*/
 void Solver::sortJobsDescendingBasedOnR(QList<Job *> *JobsToSort)
 {
     int n = JobsToSort->size();

@@ -15,7 +15,7 @@ public:
 
     virtual Solution Solve(QList<Job*> jobs, int MachineAmount);
 
-    Solution Johnson(QList<Job *> jobs, int MachineAmount);
+    //Solution Johnson(QList<Job *> jobs, int MachineAmount);
     Solution Fifo(QList<Job *> jobs);
     Solution LPT(QList<Job *> jobs, int MachineAmount);
     Solution RPT(QList<Job *> jobs, int MachineAmount);
@@ -23,8 +23,8 @@ public:
 
 protected:
 
-    Dominance CheckDominance(QList<Job*> A);
-    bool JohnsonCondition(QList<Job*>A);
+    //Dominance CheckDominance(QList<Job*> A);
+    //bool JohnsonCondition(QList<Job*>A);
 
     void sortJobsDescendingBasedOnR(QList<Job*> *JobsToSort);
 

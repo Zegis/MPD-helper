@@ -7,6 +7,7 @@
 #include "headers/ploter.h"
 #include "solution.h"
 #include "headers/johnsonSolver.h"
+#include "headers/fifoSolver.h"
 #include <QFile>
 #include <QFileDialog>
 

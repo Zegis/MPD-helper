@@ -43,15 +43,10 @@ void MainWindow::on_orderButton_clicked()
 
     int MachineCount;
 
-    if(chosenAlgorithm == 0)
+    if(chosenAlgorithm == 0 || chosenAlgorithm == 1)
     {
         MachineCount = ui->MachinesSpinBox->value();
         solution = solv->Solve(A, MachineCount);
-    }
-    else if(chosenAlgorithm == 1)
-    {
-        MachineCount = 1;
-        solution = solv->Fifo(A);
     }
     else if(chosenAlgorithm == 2)
     {
@@ -69,6 +64,8 @@ void MainWindow::on_orderButton_clicked()
         solution = solv->Hu(A,MachineCount);
     }
 
+    if(chosenAlgorithm == 1)
+        MachineCount = 1;
 
     if(solution.isOptimal())
     {
@@ -314,6 +311,11 @@ void MainWindow::on_AlgorithmBox_currentIndexChanged(int index)
     {
         delete solv;
         solv = new johnsonSolver();
+    }
+    else if(chosenAlgorithm == 1 && solv != NULL)
+    {
+        delete solv;
+        solv = new fifoSolver();
     }
     else
     {
