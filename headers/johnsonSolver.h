@@ -1,7 +1,6 @@
 #ifndef JOHNSONSOLVER_H
 #define JOHNSONSOLVER_H
 
-#include "headers/solution.h"
 #include "headers/solver.h"
 
 class johnsonSolver: public Solver

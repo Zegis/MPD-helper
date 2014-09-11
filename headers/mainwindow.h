@@ -8,6 +8,7 @@
 #include "solution.h"
 #include "headers/johnsonSolver.h"
 #include "headers/fifoSolver.h"
+#include "headers/huSolver.h"
 #include <QFile>
 #include <QFileDialog>
 

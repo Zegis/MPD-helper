@@ -43,7 +43,7 @@ void MainWindow::on_orderButton_clicked()
 
     int MachineCount;
 
-    if(chosenAlgorithm == 0 || chosenAlgorithm == 1)
+    if(chosenAlgorithm == 0 || chosenAlgorithm == 1 || chosenAlgorithm == 4)
     {
         MachineCount = ui->MachinesSpinBox->value();
         solution = solv->Solve(A, MachineCount);
@@ -57,11 +57,6 @@ void MainWindow::on_orderButton_clicked()
     {
         MachineCount = ui->MachinesSpinBox->value();
         solution = solv->RPT(A,MachineCount);
-    }
-    else if(chosenAlgorithm == 4)
-    {
-        MachineCount = ui->MachinesSpinBox->value();
-        solution = solv->Hu(A,MachineCount);
     }
 
     if(chosenAlgorithm == 1)
@@ -316,6 +311,11 @@ void MainWindow::on_AlgorithmBox_currentIndexChanged(int index)
     {
         delete solv;
         solv = new fifoSolver();
+    }
+    else if(chosenAlgorithm == 4 && solv != NULL)
+    {
+        delete solv;
+        solv = new huSolver();
     }
     else
     {
