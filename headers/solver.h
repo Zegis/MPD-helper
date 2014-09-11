@@ -13,7 +13,7 @@ class Solver
 public:
     Solver();
 
-    virtual Solution Solve();
+    virtual Solution Solve(QList<Job*> jobs, int MachineAmount);
 
     Solution Johnson(QList<Job *> jobs, int MachineAmount);
     Solution Fifo(QList<Job *> jobs);
@@ -21,7 +21,7 @@ public:
     Solution RPT(QList<Job *> jobs, int MachineAmount);
     Solution Hu(QList<Job *> jobs, int MachineAmount);
 
-private:
+protected:
 
     Dominance CheckDominance(QList<Job*> A);
     bool JohnsonCondition(QList<Job*>A);

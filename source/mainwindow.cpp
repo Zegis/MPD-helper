@@ -46,7 +46,7 @@ void MainWindow::on_orderButton_clicked()
     if(chosenAlgorithm == 0)
     {
         MachineCount = ui->MachinesSpinBox->value();
-        solution = solv->Johnson(A, MachineCount);
+        solution = solv->Solve(A, MachineCount);
     }
     else if(chosenAlgorithm == 1)
     {
@@ -309,6 +309,17 @@ void MainWindow::on_AlgorithmBox_currentIndexChanged(int index)
     chosenAlgorithm = index;
 
     int rowsAmount;
+
+    if(chosenAlgorithm == 0 && solv != NULL)
+    {
+        delete solv;
+        solv = new johnsonSolver();
+    }
+    else
+    {
+        delete solv;
+        solv = new Solver();
+    }
 
     if(chosenAlgorithm == 0)
     {

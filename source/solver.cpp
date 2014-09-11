@@ -4,7 +4,7 @@ Solver::Solver()
 {
 }
 
-Solution Solver::Solve()
+Solution Solver::Solve(QList<Job*> jobs, int MachineAmount)
 {
     return Solution("Brak");
 }
