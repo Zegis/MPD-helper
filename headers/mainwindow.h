@@ -38,7 +38,7 @@ private:
     Ui::MainWindow *ui;
 
     QList<Job *> A;
-    Solver solv;
+    Solver* solv;
 
     Solution solution;
 

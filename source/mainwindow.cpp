@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    solv = new Solver();
+
     ui->tableWidget->setColumnWidth(0,40);
     ui->AlgorithmBox->addItem("Johnson");
     ui->AlgorithmBox->addItem("FIFO");
@@ -44,27 +46,27 @@ void MainWindow::on_orderButton_clicked()
     if(chosenAlgorithm == 0)
     {
         MachineCount = ui->MachinesSpinBox->value();
-        solution = solv.Johnson(A, MachineCount);
+        solution = solv->Johnson(A, MachineCount);
     }
     else if(chosenAlgorithm == 1)
     {
         MachineCount = 1;
-        solution = solv.Fifo(A);
+        solution = solv->Fifo(A);
     }
     else if(chosenAlgorithm == 2)
     {
         MachineCount = ui->MachinesSpinBox->value();
-        solution = solv.LPT(A,MachineCount);
+        solution = solv->LPT(A,MachineCount);
     }
     else if(chosenAlgorithm == 3)
     {
         MachineCount = ui->MachinesSpinBox->value();
-        solution = solv.RPT(A,MachineCount);
+        solution = solv->RPT(A,MachineCount);
     }
     else if(chosenAlgorithm == 4)
     {
         MachineCount = ui->MachinesSpinBox->value();
-        solution = solv.Hu(A,MachineCount);
+        solution = solv->Hu(A,MachineCount);
     }
 
 

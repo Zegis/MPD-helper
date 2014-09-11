@@ -4,6 +4,11 @@ Solver::Solver()
 {
 }
 
+Solution Solver::Solve()
+{
+    return Solution("Brak");
+}
+
 Solution Solver::Johnson(QList<Job*> jobs, int MachineAmount)
 {
     QList<Job*> B;

@@ -12,6 +12,9 @@ class Solver
 {    
 public:
     Solver();
+
+    virtual Solution Solve();
+
     Solution Johnson(QList<Job *> jobs, int MachineAmount);
     Solution Fifo(QList<Job *> jobs);
     Solution LPT(QList<Job *> jobs, int MachineAmount);
