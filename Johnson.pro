@@ -21,7 +21,10 @@ SOURCES += source/job.cpp \
     source/solution.cpp \
     source/johnsonSolver.cpp \
     source/fifoSolver.cpp \
-    source/huSolver.cpp
+    source/huSolver.cpp \
+    source/approximateSolver.cpp \
+    source/ltpApproximateSolver.cpp \
+    source/rtpApproximateSolver.cpp
 
 HEADERS  += headers/job.h \
     headers/mashine.h \
@@ -34,6 +37,9 @@ HEADERS  += headers/job.h \
     headers/tree.h \
     headers/johnsonSolver.h \
     headers/fifoSolver.h \
-    headers/huSolver.h
+    headers/huSolver.h \
+    headers/approximateSolver.h \
+    headers/ltpApproximateSolver.h \
+    headers/rtpApproximateSolver.h
 
 FORMS    += ui/mainwindow.ui
