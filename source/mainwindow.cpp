@@ -43,11 +43,8 @@ void MainWindow::on_orderButton_clicked()
 
     int MachineCount;
 
-    MachineCount = ui->MachinesSpinBox->value();
+    MachineCount = (chosenAlgorithm != 1) ? ui->MachinesSpinBox->value() : 1;
     solution = solv->Solve(A, MachineCount);
-
-    if(chosenAlgorithm == 1)
-        MachineCount = 1;
 
     if(solution.isOptimal())
     {
@@ -289,40 +286,19 @@ void MainWindow::on_AlgorithmBox_currentIndexChanged(int index)
 
     int rowsAmount;
 
-    if(chosenAlgorithm == 0 && solv != NULL)
-    {
-        delete solv;
-        solv = new johnsonSolver();
-    }
-    else if(chosenAlgorithm == 1 && solv != NULL)
-    {
-        delete solv;
-        solv = new fifoSolver();
-    }
-    else if(chosenAlgorithm == 2 && solv != NULL)
-    {
-        delete solv;
-        solv = new ltpApproximateSolver();
-    }
-    else if(chosenAlgorithm == 4 && solv != NULL)
-    {
-        delete solv;
-        solv = new huSolver();
-    }
-    else if(chosenAlgorithm == 3 && solv != NULL)
-    {
-        delete solv;
-        solv = new rtpApproximateSolver();
-    }
+    delete solv;
 
     if(chosenAlgorithm == 0)
     {
+        solv = new johnsonSolver();
+
         rowsAmount = ui->MachinesSpinBox->value();
         ui->tableWidget->setRowCount(rowsAmount);
         PrepareTableWidgetLabels(rowsAmount);
     }
     else if(chosenAlgorithm == 1)
     {
+        solv = new fifoSolver();
         ui->tableWidget->setRowCount(2);
         QStringList newLabels = (QStringList() << "P" << "R");
         ui->tableWidget->setVerticalHeaderLabels(newLabels);
@@ -332,9 +308,16 @@ void MainWindow::on_AlgorithmBox_currentIndexChanged(int index)
         ui->tableWidget->setRowCount(3);
         QStringList newLabels = (QStringList() << "Prec[1]" << "Prec[2]" << "Prec[3]");
         ui->tableWidget->setVerticalHeaderLabels(newLabels);
+
+        solv = new huSolver();
     }
     else
     {
+        if(chosenAlgorithm == 2)
+            solv = new ltpApproximateSolver();
+        else
+            solv = new rtpApproximateSolver();
+
         rowsAmount = 1;
         ui->tableWidget->setRowCount(1);
         PrepareTableWidgetLabels(1);
